@@ -1,2 +1,2 @@
 # Fringe
-Explore. Discover.
+Explore. Discover. Try.
