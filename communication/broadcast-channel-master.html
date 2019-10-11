@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Broadcast Channel - Master</title>
+</head>
+<body>
+  <button id="post">Post</button>
+
+  <script src="../libs/jquery.min.js"></script>
+  <script>
+    const channel = new BroadcastChannel('main')
+    console.log('Channel Name:', channel.name)
+
+    $('#post').on('click', function () {
+      channel.postMessage('hi')
+    })
+  </script>
+</body>
+</html>

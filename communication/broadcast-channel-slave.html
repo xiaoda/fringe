@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Broadcast Channel - Slave</title>
+</head>
+<body>
+  <script>
+    const channel = new BroadcastChannel('main')
+    channel.onmessage = function (e) {
+      console.log('Message Data:', e.data)
+    }
+  </script>
+</body>
+</html>
