@@ -1,6 +1,6 @@
-const lines = [
+export default [
   {
-    name: '1',
+    name: '1号线',
     loop: false,
     stations: [
       '富锦路', '友谊西路', '宝安公路', '共富新村', '呼兰路', '通河新村', '共康路', '彭浦新村',
@@ -10,7 +10,7 @@ const lines = [
     ]
   },
   {
-    name: '2',
+    name: '2号线',
     loop: false,
     stations: [
       '徐泾东', '虹桥火车站', '虹桥2号航站楼', '淞虹路', '北新泾', '威宁路', '娄山关路', '中山公园',
@@ -20,7 +20,7 @@ const lines = [
     ]
   },
   {
-    name: '3',
+    name: '3号线',
     loop: false,
     stations: [
       '上海南站', '石龙路', '龙漕路', '漕溪路', '宜山路', '虹桥路', '延安西路', '中山公园',
@@ -30,7 +30,7 @@ const lines = [
     ]
   },
   {
-    name: '4',
+    name: '4号线',
     loop: true,
     stations: [
       '宜山路', '虹桥路', '延安西路', '中山公园', '金沙江路', '曹杨路', '镇坪路', '中潭路',
@@ -40,5 +40,3 @@ const lines = [
     ]
   }
 ]
-
-export default {lines}

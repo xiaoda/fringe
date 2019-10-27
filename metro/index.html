@@ -5,9 +5,12 @@
   <meta charset="utf-8">
 </head>
 <body>
+  <script src="../libs/geometry-utils.js"></script>
   <script type="module">
-    import lines from './lines.js'
-    console.log(lines)
+    import Route from './route.js'
+
+    const route = new Route()
+    const possibleRoutes = route.getPossibleRoutes('海伦路', '呼兰路')
   </script>
 </body>
 </html>
