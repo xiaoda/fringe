@@ -96,8 +96,8 @@ class Route {
   _getRecursiveRoutes (station, end, routes, prevQueue) {
     this.recursiveCount++
     if (!prevQueue) prevQueue = {route: [], lines: []}
-    if (prevQueue.lines.length > routes.minTransfers + 1) return
-    else if (prevQueue.route.length > routes.minStations) return
+    if (prevQueue.lines.length > routes.minTransfers + 1 + 1) return
+    else if (prevQueue.route.length > routes.minStations + 5) return
     this.stationLinesMap[station].forEach(line => {
       const queue = GeometryUtils.clone(prevQueue)
       const lastLine =
@@ -137,8 +137,8 @@ class Route {
     this.recursiveCount++
     if (!prevQueue) prevQueue = {route: [], lines: []}
     if (!lines) lines = this.stationLinesMap[station]
-    if (prevQueue.lines.length > routes.minTransfers + 1) return
-    else if (prevQueue.route.length > routes.minStations) return
+    if (prevQueue.lines.length > routes.minTransfers + 1 + 1) return
+    else if (prevQueue.route.length > routes.minStations + 5) return
     lines.forEach(line => {
       const queue = GeometryUtils.clone(prevQueue)
       const lastLine =
@@ -258,14 +258,12 @@ class Route {
     this.recursiveCount = 0
     this._getRecursiveRoutes(start, end, rawRoutes)
     console.log('Recursive Count', this.recursiveCount)
-    /*
     const routesWithLeastStations = GeometryUtils.chain(
       rawRoutes.data,
       this._getRoutesWithLeastStations,
       this._getRoutesWithLeastTransfer
     )
     console.log('Least Stations', routesWithLeastStations)
-    */
     const routesWithLeastTrasnfer = GeometryUtils.chain(
       rawRoutes.data,
       this._getRoutesWithLeastTransfer,
@@ -283,14 +281,12 @@ class Route {
     this.recursiveCount = 0
     this._getRecursiveRoutesUntilTransfer(start, end, rawRoutes)
     console.log('Recursive Count', this.recursiveCount)
-    /*
     const routesWithLeastStations = GeometryUtils.chain(
       rawRoutes.data,
       this._getRoutesWithLeastStations,
       this._getRoutesWithLeastTransfer
     )
     console.log('Least Stations', routesWithLeastStations)
-    */
     const routesWithLeastTrasnfer = GeometryUtils.chain(
       rawRoutes.data,
       this._getRoutesWithLeastTransfer,
