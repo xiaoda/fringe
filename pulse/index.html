@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pulse</title>
+  <meta charset="utf-8">
+  <style>
+    body {font-family: PingFangSC-Light;}
+  </style>
+</head>
+<body>
+  <div id="rate">0</div>
+
+  <script src="../libs/jquery.min.js"></script>
+  <script type="module">
+    import Pulse from './pulse.js'
+    import PulseDetector from './pulse-detector.js'
+
+    const pulse = new Pulse()
+    const pulseDetector = new PulseDetector()
+
+    pulse.onPulse(_ => {
+      console.log('Boom!')
+      pulseDetector.detect()
+    })
+
+    function liveRate () {
+      setTimeout(_ => {
+        $('#rate').text(pulseDetector.getRate())
+        liveRate()
+      }, 1000)
+    }
+
+    liveRate()
+  </script>
+</body>
+</html>
