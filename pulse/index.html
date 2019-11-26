@@ -9,6 +9,9 @@
 </head>
 <body>
   <div>Rate: <span id="rate">0</span></div>
+  <div>
+    <button data-target="100" data-duration="20">100, 20s</button>
+  </div>
 
   <script src='../libs/geometry-utils.js'></script>
   <script src="../libs/jquery.min.js"></script>
@@ -27,6 +30,12 @@
     GeometryUtils.setIntervalCustom(_ => {
       $('#rate').text(pulseDetector.getRate())
     }, 1000)
+
+    $('[data-target][data-duration]').on('click', function () {
+      const target = Number($(this).data('target'))
+      const duration = Number($(this).data('duration'))
+      pulse.changeRate(target, duration)
+    })
   </script>
 </body>
 </html>
