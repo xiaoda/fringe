@@ -7,9 +7,8 @@ class Pulse {
   }
 
   pulsing () {
-    setTimeout(_ => {
+    GeometryUtils.setIntervalCustom(_ => {
       if (this.callback) this.callback()
-      this.pulsing()
     }, this.interval * 1000)
   }
 

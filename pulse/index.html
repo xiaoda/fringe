@@ -8,8 +8,9 @@
   </style>
 </head>
 <body>
-  <div id="rate">0</div>
+  <div>Rate: <span id="rate">0</span></div>
 
+  <script src='../libs/geometry-utils.js'></script>
   <script src="../libs/jquery.min.js"></script>
   <script type="module">
     import Pulse from './pulse.js'
@@ -23,14 +24,9 @@
       pulseDetector.detect()
     })
 
-    function liveRate () {
-      setTimeout(_ => {
-        $('#rate').text(pulseDetector.getRate())
-        liveRate()
-      }, 1000)
-    }
-
-    liveRate()
+    GeometryUtils.setIntervalCustom(_ => {
+      $('#rate').text(pulseDetector.getRate())
+    }, 1000)
   </script>
 </body>
 </html>
