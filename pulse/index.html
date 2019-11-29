@@ -8,9 +8,13 @@
   </style>
 </head>
 <body>
-  <div>Rate: <span id="rate">0</span></div>
+  <div>Pulse Rate: <span id="pulseRate">0</span></div>
+  <div>Detected Rate: <span id="detectedRate">0</span></div>
   <div>
-    <button data-target="100" data-duration="20">100, 20s</button>
+    <button data-target="80" data-duration="20">80, 20s</button>
+    <button data-target="90" data-duration="15">90, 15s</button>
+    <button data-target="120" data-duration="10">120, 10s</button>
+    <button data-target="140" data-duration="5">140, 5s</button>
   </div>
 
   <script src='../libs/geometry-utils.js'></script>
@@ -28,7 +32,8 @@
     })
 
     GeometryUtils.setIntervalCustom(_ => {
-      $('#rate').text(pulseDetector.getRate())
+      $('#pulseRate').text(pulse.getRate())
+      $('#detectedRate').text(pulseDetector.getRate())
     }, 1000)
 
     $('[data-target][data-duration]').on('click', function () {

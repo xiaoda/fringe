@@ -1,8 +1,9 @@
 class PulseDetector {
   constructor () {
-    this.records = []
     this.rate = 0
-    this.monitorInterval = 1
+    this.monitorDuration = 10
+    this.monitorInterval = .5
+    this.records = []
     this.afterMonitorActions = []
     this.locks = {
       monitor: false
@@ -17,11 +18,11 @@ class PulseDetector {
       const currentTimestamp = +new Date() / 1000
       for (let i = this.records.length - 1; i >= 0; i--) {
         const timestamp = this.records[i]
-        if (currentTimestamp - timestamp > 60) {
+        if (currentTimestamp - timestamp > this.monitorDuration) {
           this.records.splice(i, 1)
         }
       }
-      this.rate = Math.round(
+      this.rate = (
         (this.records.length - 1) /
         (this.records[this.records.length - 1] - this.records[0])
         * 60
@@ -43,7 +44,7 @@ class PulseDetector {
   }
 
   getRate () {
-    return this.rate
+    return Math.round(this.rate)
   }
 
   _lock (name) {
