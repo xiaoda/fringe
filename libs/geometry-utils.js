@@ -42,6 +42,20 @@ const GeometryUtils = {
     }
     return radian
   },
+  linearChange (initial, target, duration, callback, precision = 0) {
+    const startTimestamp = +new Date()
+    const intervalID = setInterval(_ => {
+      const timestamp = +new Date()
+      const timePassed = timestamp - startTimestamp
+      if (timePassed > duration) {
+        clearInterval(intervalID)
+        return
+      }
+      const current = initial + (target - initial) * (timePassed / duration)
+      callback(current)
+    }, precision)
+    return intervalID
+  },
   debounce (fun, interval) {
     let timeoutHandler
     return function () {

@@ -6,18 +6,12 @@ class Pulse {
     this.pulsing()
   }
 
-  changeRate (target, duration) { // TODO: Linear rate when changing
+  changeRate (target, duration) {
     this.stopChangingRate()
-    target = Math.round(target)
-    const steps = target - this.rate
-    const interval = duration / Math.abs(steps) * 1000
-    const step = steps / Math.abs(steps)
-    this.changingRateIntervalID = GeometryUtils.setIntervalCustom(_ => {
-      this.rate += step
-      if (this.rate === target) {
-        this.stopChangingRate()
-      }
-    }, interval)
+    this.changingRateIntervalID = GeometryUtils.linearChange(
+      this.rate, target, duration * 1000,
+      current => this.rate = current
+    )
   }
 
   stopChangingRate () {
@@ -37,7 +31,7 @@ class Pulse {
   }
 
   getRate () {
-    return this.rate
+    return Math.round(this.rate)
   }
 }
 
