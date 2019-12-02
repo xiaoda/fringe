@@ -75,7 +75,7 @@ export default [
     ]
   },
   {
-    brand: 'Infinity',
+    brand: 'Infiniti',
     models: [
       {
         model: 'Q50L',
