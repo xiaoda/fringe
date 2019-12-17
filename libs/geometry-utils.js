@@ -21,6 +21,9 @@ const GeometryUtils = {
     return !!smallerCount && !!biggerCount &&
            (smallerCount % 2 === 1 || biggerCount % 2 === 1)
   },
+  unique (array) {
+    return Array.from(new Set(array))
+  },
   clone (object) {
     return JSON.parse(JSON.stringify(object))
   },

@@ -1,5 +1,9 @@
 import lines from './lines.js'
 
+/**
+ * Find the routes station by station
+ */
+
 class Route {
   constructor () {
     this.lines = lines
@@ -127,7 +131,8 @@ class Route {
       Array(1, -1).forEach(direction => {
         const nextStation = this._getNextStation(line, station, direction)
         if (!nextStation) return // no station
-        else if (queue.route.some(item => item.station === nextStation)) return // been on the station
+        else if (queue.route.some(item => item.station === nextStation)) return
+        // been on the station
         this._getRecursiveRoutes(nextStation, end, routes, queue)
       })
     })
@@ -232,7 +237,9 @@ class Route {
       }
       stationsNumRoutesMap[stationsNum].push(route)
     })
-    const leastStationsNum = Math.min(...Object.keys(stationsNumRoutesMap).map(num => Number(num)))
+    const leastStationsNum = Math.min(
+      ...Object.keys(stationsNumRoutesMap).map(num => Number(num))
+    )
     return stationsNumRoutesMap[String(leastStationsNum)]
   }
 
@@ -245,7 +252,9 @@ class Route {
       }
       transferNumRoutesMap[transferNum].push(route)
     })
-    const leastTransferNum = Math.min(...Object.keys(transferNumRoutesMap).map(num => Number(num)))
+    const leastTransferNum = Math.min(
+      ...Object.keys(transferNumRoutesMap).map(num => Number(num))
+    )
     return transferNumRoutesMap[String(leastTransferNum)]
   }
 
@@ -263,13 +272,13 @@ class Route {
       this._getRoutesWithLeastStations,
       this._getRoutesWithLeastTransfer
     )
-    console.log('Least Stations', routesWithLeastStations)
+    console.log('Least Stations (Reference)', routesWithLeastStations)
     const routesWithLeastTrasnfer = GeometryUtils.chain(
       rawRoutes.data,
       this._getRoutesWithLeastTransfer,
       this._getRoutesWithLeastStations
     )
-    console.log('Least Transfer', routesWithLeastTrasnfer)
+    console.log('Least Transfer (Reference)', routesWithLeastTrasnfer)
   }
 
   getPossibleRoutesV2 (start, end) {
@@ -286,13 +295,13 @@ class Route {
       this._getRoutesWithLeastStations,
       this._getRoutesWithLeastTransfer
     )
-    console.log('Least Stations', routesWithLeastStations)
+    console.log('Least Stations (Reference)', routesWithLeastStations)
     const routesWithLeastTrasnfer = GeometryUtils.chain(
       rawRoutes.data,
       this._getRoutesWithLeastTransfer,
       this._getRoutesWithLeastStations
     )
-    console.log('Least Transfer', routesWithLeastTrasnfer)
+    console.log('Least Transfer (Reference)', routesWithLeastTrasnfer)
   }
 }
 

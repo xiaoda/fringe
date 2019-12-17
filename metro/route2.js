@@ -1,5 +1,9 @@
 import lines from './lines.js'
 
+/**
+ * Find the routes by lines transfer
+ */
+
 class Route {
   constructor () {
     this.lines = lines
@@ -40,8 +44,8 @@ class Route {
       })
     })
     Object.keys(lineConnectionsMap).forEach(line => {
-      lineConnectionsMap[line] = Array.from(
-        new Set(lineConnectionsMap[line])
+      lineConnectionsMap[line] = GeometryUtils.unique(
+        lineConnectionsMap[line]
       ).filter(connection => connection !== line)
     })
     return lineConnectionsMap
@@ -160,19 +164,23 @@ class Route {
         const tempRoutes = []
         processedRoutes.forEach(processedRoute => {
           levelRoutes.forEach(levelRoute => {
-            const processedRouteLastItem = processedRoute[processedRoute.length - 1].station
+            const processedRouteLastItem = (
+              processedRoute[processedRoute.length - 1].station
+            )
             const levelRouteFirstItem = levelRoute[0]
             if (processedRouteLastItem === levelRouteFirstItem) {
-              tempRoutes.push(processedRoute.slice(0, processedRoute.length - 1).concat(
-                levelRoute.map((station, i) => {
-                  const tempData = {
-                    station,
-                    line: stack[index]
-                  }
-                  if (!i) tempData.lastLine = stack[index - 1]
-                  return tempData
-                })
-              ))
+              tempRoutes.push(
+                processedRoute.slice(0, processedRoute.length - 1).concat(
+                  levelRoute.map((station, i) => {
+                    const tempData = {
+                      station,
+                      line: stack[index]
+                    }
+                    if (!i) tempData.lastLine = stack[index - 1]
+                    return tempData
+                  })
+                )
+              )
             }
           })
         })
@@ -200,21 +208,10 @@ class Route {
       }
       stationsNumRoutesMap[stationsNum].push(route)
     })
-    const leastStationsNum = Math.min(...Object.keys(stationsNumRoutesMap).map(num => Number(num)))
+    const leastStationsNum = Math.min(
+      ...Object.keys(stationsNumRoutesMap).map(num => Number(num))
+    )
     return stationsNumRoutesMap[String(leastStationsNum)]
-  }
-
-  getRoutesWithLeastTransfer (routes) {
-    const transferNumRoutesMap = {}
-    routes.forEach(route => {
-      const transferNum = route.filter(item => item.lastLine).length
-      if (!transferNumRoutesMap[transferNum]) {
-        transferNumRoutesMap[transferNum] = []
-      }
-      transferNumRoutesMap[transferNum].push(route)
-    })
-    const leastTransferNum = Math.min(...Object.keys(transferNumRoutesMap).map(num => Number(num)))
-    return transferNumRoutesMap[String(leastTransferNum)]
   }
 
   getPossibleRoutes (start, end) {
@@ -228,18 +225,8 @@ class Route {
         })
       })
     })
-    const routesWithLeastStations = GeometryUtils.chain(
-      rawRoutes,
-      this.getRoutesWithLeastStations,
-      this.getRoutesWithLeastTransfer
-    )
-    console.log('Least Stations', routesWithLeastStations)
-    const routesWithLeastTrasnfer = GeometryUtils.chain(
-      rawRoutes,
-      this.getRoutesWithLeastTransfer,
-      this.getRoutesWithLeastStations
-    )
-    console.log('Least Transfer', routesWithLeastTrasnfer)
+    const routesWithLeastTransfer = this.getRoutesWithLeastStations(rawRoutes)
+    console.log('Least Transfer (Accurate)', routesWithLeastTransfer)
   }
 }
 
