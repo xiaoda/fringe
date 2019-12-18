@@ -100,20 +100,22 @@ class Route {
     })
     let count = 0
     while (connections.length && count < 999) {
-      console.log('#count#', count)
-      console.log('#connections#', GeometryUtils.clone(connections))
-      console.log('#stationsStack#', GeometryUtils.clone(stationsStack))
       const nextConnections = []
       const newStationsStack = []
       connections.forEach(connection => {
-        nextConnections.push(
-          ...this.stationConnectionsMap[connection.station].map(station => {
-            return {
-              station,
-              prevStation: connection.station
-            }
-          })
-        )
+        this.stationConnectionsMap[connection.station].forEach(station => {
+          const tempNextConnection = {
+            station,
+            prevStation: connection.station
+          }
+          if (nextConnections.find(nextConnection => {
+            return (
+              nextConnection.station === tempNextConnection.station &&
+              nextConnection.prevStation === tempNextConnection.prevStation
+            )
+          })) return
+          nextConnections.push(tempNextConnection)
+        })
         stationsStack.forEach(stack => {
           if (stack[stack.length - 1] === connection.prevStation) {
             newStationsStack.push([...stack, connection.station])
@@ -206,7 +208,6 @@ class Route {
   getPossibleRoutes (start, end) {
     const rawRoutes = []
     this.generateStationsData(start, end)
-    return
     const stationsStack = this.getStationsStack(start, end)
     stationsStack.forEach(stack => {
       rawRoutes.push(...this.processRoutesData(stack))
