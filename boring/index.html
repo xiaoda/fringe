@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Boring Frontend</title>
+  <meta charset="utf-8">
+  <script src="/libs/jquery.min.js"></script>
+  <script src="./boring.js"></script>
+</head>
+<body>
+  <div>
+    <button onClick="$list.methods.add()">Add</button>
+    <button onClick="$list.methods.reduce()">Reduce</button>
+  </div>
+  <ul id="list"></ul>
+
+  <script>
+    const $list = new Boring({
+      selector: '#list',
+      data: {
+        list: ['Item 1', 'Item 2', 'Item 3']
+      },
+      methods: {
+        add () {
+          const {list} = this.data
+          list.push(`Item ${list.length + 1}`)
+          this.setData({list})
+        },
+        reduce () {
+          const {list} = this.data
+          list.pop()
+          this.setData({list})
+        }
+      },
+      content (data) {
+        const {list} = this.data
+        return list.map(item => `
+          <li>${item}</li>
+        `).join('')
+      },
+    })
+  </script>
+</body>
+</html>
