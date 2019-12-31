@@ -1,5 +1,5 @@
-class Boring {
-  constructor (options) {
+class Component {
+  constructor (options = {}) {
     this.container = $(options.selector)
     this.data = options.data || {}
     this.methods = options.methods || {}
