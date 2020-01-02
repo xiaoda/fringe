@@ -3,41 +3,60 @@
 <head>
   <meta charset="utf-8">
   <title>Component</title>
+  <style>
+    body {font-family: PingFangSC-Light;}
+  </style>
 </head>
 <body>
-  <div>
-    <button onClick="$list.methods.add()">Add</button>
-    <button onClick="$list.methods.reduce()">Reduce</button>
-  </div>
-  <ul id="list"></ul>
+  <div id="demo"></div>
 
   <script src="/libs/jquery.min.js"></script>
   <script src="./component.js"></script>
   <script>
-    const $list = new Component({
-      selector: '#list',
-      data: {
-        list: ['Item 1', 'Item 2', 'Item 3']
-      },
+    const $demo = new Component({
+      name: '$demo',
+      selector: '#demo',
       methods: {
         add () {
-          const {list} = this.data
-          list.push(`Item ${list.length + 1}`)
-          this.setData({list})
+          const {list} = $list.data
+          list.push('Item')
+          $list.setData({list})
         },
         reduce () {
-          const {list} = this.data
+          const {list} = $list.data
           list.pop()
-          this.setData({list})
+          $list.setData({list})
         }
       },
-      content (data) {
-        const {list} = this.data
-        return list.map(item => `
-          <li>${item}</li>
-        `).join('')
-      },
+      render () {
+        return `
+          <div>
+            <button onClick="${this.name}.add()">Add</button>
+            <button onClick="${this.name}.reduce()">Reduce</button>
+          </div>
+          ${Component.sub($list, this)}
+        `
+      }
     })
+
+    const $list = new Component({
+      name: '$list',
+      data: {
+        list: Array(3).fill('Item')
+      },
+      render (data) {
+        const {list} = this.data
+        return `<ol>
+          ${list.map(name => {
+            return Component.sub($listItem, this, {name})
+          }).join('')}
+        </ol>`
+      }
+    })
+
+    const $listItem = data => {
+      return `<li>${data.name}</li>`
+    }
   </script>
 </body>
 </html>
