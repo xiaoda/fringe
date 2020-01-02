@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Exchange</title>
+</head>
+<body>
+  <script src="/libs/jquery.min.js"></script>
+  <script src="/component/component.js"></script>
+  <script type="module">
+    import Currency from './currency.js'
+    import House from './house.js'
+    import Investor from './investor.js'
+
+    const CNY = new Currency({
+      name: 'CNY',
+      interest: .05
+    })
+    const USD = new Currency({
+      name: 'USD',
+      interest: .05
+    })
+    const house = new House({
+      currencies: [CNY, USD],
+      rates: {
+        USD: {
+          CNY: 7
+        }
+      }
+    })
+    const InvestorA = new Investor()
+  </script>
+</body>
+</html>
