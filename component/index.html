@@ -13,49 +13,110 @@
   <script src="/libs/jquery.min.js"></script>
   <script src="./component.js"></script>
   <script>
-    const $demo = new Component({
-      name: '$demo',
+    const components = {
+      listItems: {}
+    }
+
+    components.demo = new Component({
+      name: 'components.demo',
       selector: '#demo',
-      methods: {
-        add () {
-          const {list} = $list.data
-          list.push('Item')
-          $list.setData({list})
-        },
-        reduce () {
-          const {list} = $list.data
-          list.pop()
-          $list.setData({list})
-        }
-      },
       render () {
         return `
           <div>
             <button onClick="${this.name}.add()">Add</button>
-            <button onClick="${this.name}.reduce()">Reduce</button>
+            <button onClick="${this.name}.remove()">Remove</button>
           </div>
-          ${Component.sub($list, this)}
+          ${Component.sub(components.list, this)}
         `
+      },
+      created () {
+        console.log('demo created')
+      },
+      mounted () {
+        console.log('demo mounted')
+      },
+      methods: {
+        add () {
+          const {list} = components.list.data
+          list.push(`Item${list.length + 1}`)
+          components.list.setData({list})
+        },
+        remove () {
+          const {list} = components.list.data
+          list.pop()
+          components.list.setData({list})
+        }
       }
     })
 
-    const $list = new Component({
-      name: '$list',
-      data: {
-        list: Array(3).fill('Item')
+    components.list = new Component({
+      name: 'components.list',
+      data () {
+        const list = []
+        for (let i = 0; i < 2; i++) {
+          list.push(`Item${i + 1}`)
+        }
+        return {list}
       },
-      render (data) {
+      render () {
         const {list} = this.data
+        Object.keys(components.listItems).forEach(name => {
+          if (!list.includes(name)) delete components.listItems[name]
+        })
+        list.forEach(name => {
+          if (components.listItems[name]) return
+          components.listItems[name] = new Component(listItemFactory({
+            name: `components.listItems.${name}`
+          }))
+        })
         return `<ol>
           ${list.map(name => {
-            return Component.sub($listItem, this, {name})
+            // return components.listItem({name})
+            return Component.sub(components.listItems[name], this, {name})
           }).join('')}
         </ol>`
+      },
+      created () {
+        console.log('list created')
+      },
+      mounted () {
+        console.log('list mounted')
       }
     })
 
-    const $listItem = data => {
+    components.listItem = data => {
       return `<li>${data.name}</li>`
+    }
+
+    function listItemFactory (options = {}) {
+      return {
+        name: options.name,
+        data: {
+          name: null,
+          count: 0
+        },
+        render () {
+          const {name, count} = this.data
+          return `<li>
+            ${name}.
+            count:${count}
+            <button onClick="${this.name}.increase()">increase</button>
+          </li>`
+        },
+        created () {
+          console.log(`listItem created, name: ${this.data.name}`)
+        },
+        mounted () {
+          console.log(`listItem mounted, name: ${this.data.name}`)
+        },
+        methods: {
+          increase () {
+            let {count} = this.data
+            count++
+            this.setData({count})
+          }
+        }
+      }
     }
   </script>
 </body>
