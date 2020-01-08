@@ -35,6 +35,9 @@
       mounted () {
         console.log('demo mounted')
       },
+      updated () {
+        console.log('demo updated')
+      },
       methods: {
         add () {
           const {list} = components.list.data
@@ -81,6 +84,9 @@
       },
       mounted () {
         console.log('list mounted')
+      },
+      updated () {
+        console.log('list updated')
       }
     })
 
@@ -108,6 +114,9 @@
         },
         mounted () {
           console.log(`listItem mounted, name: ${this.data.name}`)
+        },
+        updated () {
+          console.log(`listItem updated, name: ${this.data.name}`)
         },
         methods: {
           increase () {

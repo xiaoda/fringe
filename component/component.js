@@ -19,14 +19,19 @@ class Component {
     this.methods = options.methods || {}
     this.selector = options.selector
     this.parent = options.parent
-    this.parentDataAlreadySet = false
-    this.alreadyMounted = false
+    this.optionFactory('parentDataAlreadySet', false)
+    this.optionFactory('alreadyMounted', false)
+    this.optionFactory('needRerender', true)
+    this.optionFactory('lastRenderContent', '')
     this.render = _ => {
+      if (typeof options.render !== 'function') return ''
       const html = options.render.call(this)
-      if (this.alreadyMounted) {
+      this.lastRenderContent(html)
+      this.needRerender(false)
+      if (this.alreadyMounted()) {
         this.triggerHook(HOOKS.updated)
       } else {
-        this.alreadyMounted = true
+        this.alreadyMounted(true)
         this.triggerHook(HOOKS.mounted)
       }
       return html
@@ -53,16 +58,18 @@ class Component {
     Object.keys(dataObject).forEach(key => {
       this.data[key] = dataObject[key]
     })
+    this.needRerender(true)
     if (needUpdate) this.update()
   }
 
   setDataFromParent (dataObject) {
-    if (this.parentDataAlreadySet) return
-    this.parentDataAlreadySet = true
+    if (this.parentDataAlreadySet()) return
+    this.parentDataAlreadySet(true)
     this.setData(dataObject, false)
   }
 
   setParent (component) {
+    if (this.parent) return
     this.parent = component
   }
 
@@ -73,6 +80,7 @@ class Component {
         container.html(this.render())
       }, 0)
     } else if (this.parent) {
+      this.parent.needRerender(true)
       this.parent.update()
     }
   }
@@ -82,11 +90,27 @@ class Component {
     if (typeof fun === 'function') fun()
   }
 
+  optionFactory (funName, value) {
+    const property = `_${funName}`
+    this[property] = value
+    this[funName] = option => {
+      if (typeof option === 'undefined') {
+        return this[property]
+      } else {
+        this[property] = option
+      }
+    }
+  }
+
   static sub (component, parentComponent, dataObject) {
     if (component instanceof Component) {
       component.setParent(parentComponent)
       if (dataObject) component.setDataFromParent(dataObject)
-      return component.render()
+      return (
+        component.needRerender() ?
+        component.render() :
+        component.lastRenderContent()
+      )
     } else if (typeof component === 'function') {
       return component(dataObject)
     }
