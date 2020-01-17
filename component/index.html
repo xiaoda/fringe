@@ -63,15 +63,11 @@
       },
       render () {
         const {list} = this.data
-        Object.keys(components.listItems).forEach(name => {
-          if (!list.includes(name)) delete components.listItems[name]
-        })
-        list.forEach(name => {
-          if (components.listItems[name]) return
-          components.listItems[name] = new Component(listItemFactory({
-            name: `components.listItems.${name}`
-          }))
-        })
+        Component.dispatchInstances(
+          list,
+          listItemFactory,
+          'components.listItems'
+        )
         return `<ol>
           ${list.map(name => {
             // return components.listItem({name})

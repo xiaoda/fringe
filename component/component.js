@@ -115,4 +115,17 @@ class Component {
       return component(dataObject)
     }
   }
+
+  static dispatchInstances (keys, factory, namePrefix) {
+    const instances = eval(namePrefix)
+    Object.keys(instances).forEach(name => {
+      if (!keys.includes(name)) delete instances[name]
+    })
+    keys.forEach(name => {
+      if (instances[name]) return
+      instances[name] = new Component(factory({
+        name: `${namePrefix}.${name}`
+      }))
+    })
+  }
 }
