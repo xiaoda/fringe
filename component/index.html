@@ -13,10 +13,6 @@
   <script src="/libs/jquery.min.js"></script>
   <script src="./component.js"></script>
   <script>
-    const components = {
-      listItems: {}
-    }
-
     Component.create({
       selector: '#demo',
       render () {
@@ -63,7 +59,7 @@
         const {list} = this.data
         return `<ol>
           ${list.map(name => {
-            // return components.listItem({name})
+            // return listItem({name})
             return this.subComponent(listItemFactory({
               name: `listItem_${name}`
             }), {name})
@@ -81,7 +77,7 @@
       }
     })
 
-    components.listItem = data => {
+    const listItem = data => {
       return `<li>${data.name}</li>`
     }
 
