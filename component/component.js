@@ -1,8 +1,4 @@
-const HOOKS = {
-  created: 'created',
-  updated: 'updated',
-  mounted: 'mounted'
-}
+window._components = {}
 
 class Component {
   constructor (options = {}) {
@@ -29,15 +25,15 @@ class Component {
       this.lastRenderContent(html)
       this.needRerender(false)
       if (this.alreadyMounted()) {
-        this.triggerHook(HOOKS.updated)
+        this.triggerHook(this.getHook('updated'))
       } else {
         this.alreadyMounted(true)
-        this.triggerHook(HOOKS.mounted)
+        this.triggerHook(this.getHook('mounted'))
       }
       return html
     }
-    Object.keys(HOOKS).forEach(key => {
-      const hook = HOOKS[key]
+    Object.keys(this.getHook()).forEach(key => {
+      const hook = this.getHook(key)
       if (typeof options[hook] !== 'function') return
       this[hook] = options[hook].bind(this)
     })
@@ -46,8 +42,29 @@ class Component {
       this[key] = this.methods[key].bind(this)
     })
 
-    this.triggerHook(HOOKS.created)
+    this.triggerHook(this.getHook('created'))
     this.update()
+  }
+
+  optionFactory (funName, value) {
+    const property = `_${funName}`
+    this[property] = value
+    this[funName] = option => {
+      if (typeof option === 'undefined') {
+        return this[property]
+      } else {
+        this[property] = option
+      }
+    }
+  }
+
+  getHook (key) {
+    const hooks = {
+      created: 'created',
+      updated: 'updated',
+      mounted: 'mounted'
+    }
+    return key ? hooks[key] : hooks
   }
 
   getContainer () {
@@ -90,21 +107,25 @@ class Component {
     if (typeof fun === 'function') fun()
   }
 
-  optionFactory (funName, value) {
-    const property = `_${funName}`
-    this[property] = value
-    this[funName] = option => {
-      if (typeof option === 'undefined') {
-        return this[property]
+  subComponent (component, dataObject) {
+    if (
+      typeof component === 'object' &&
+      !(component instanceof Component)
+    ) {
+      const componentName = `
+        ${this.name}__${component.name}
+      `.replace(/\s/g, '').replace('window._components.', '')
+      if (window._components[componentName]) {
+        component = window._components[componentName]
       } else {
-        this[property] = option
+        component = Component.create({
+          ...component,
+          name: componentName
+        })
       }
     }
-  }
-
-  static sub (component, parentComponent, dataObject) {
     if (component instanceof Component) {
-      component.setParent(parentComponent)
+      component.setParent(this)
       if (dataObject) component.setDataFromParent(dataObject)
       return (
         component.needRerender() ?
@@ -116,16 +137,15 @@ class Component {
     }
   }
 
-  static dispatchInstances (keys, factory, namePrefix) {
-    const instances = eval(namePrefix)
-    Object.keys(instances).forEach(name => {
-      if (!keys.includes(name)) delete instances[name]
+  static create (options = {}) {
+    const componentName = options.name ? options.name : `
+      C${Number(new Date())}
+      ${String(Math.random()).replace('.', '')}
+    `.replace(/\s/g, '')
+    window._components[componentName] = new Component({
+      ...options,
+      name: `window._components.${componentName}`
     })
-    keys.forEach(name => {
-      if (instances[name]) return
-      instances[name] = new Component(factory({
-        name: `${namePrefix}.${name}`
-      }))
-    })
+    return window._components[componentName]
   }
 }

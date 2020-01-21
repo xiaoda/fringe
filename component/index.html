@@ -17,8 +17,7 @@
       listItems: {}
     }
 
-    components.demo = new Component({
-      name: 'components.demo',
+    Component.create({
       selector: '#demo',
       render () {
         return `
@@ -26,7 +25,7 @@
             <button onClick="${this.name}.add()">Add</button>
             <button onClick="${this.name}.remove()">Remove</button>
           </div>
-          ${Component.sub(components.list, this)}
+          ${this.subComponent($list)}
         `
       },
       created () {
@@ -40,20 +39,19 @@
       },
       methods: {
         add () {
-          const {list} = components.list.data
+          const {list} = $list.data
           list.push(`Item${list.length + 1}`)
-          components.list.setData({list})
+          $list.setData({list})
         },
         remove () {
-          const {list} = components.list.data
+          const {list} = $list.data
           list.pop()
-          components.list.setData({list})
+          $list.setData({list})
         }
       }
     })
 
-    components.list = new Component({
-      name: 'components.list',
+    const $list = Component.create({
       data () {
         const list = []
         for (let i = 0; i < 2; i++) {
@@ -63,15 +61,12 @@
       },
       render () {
         const {list} = this.data
-        Component.dispatchInstances(
-          list,
-          listItemFactory,
-          'components.listItems'
-        )
         return `<ol>
           ${list.map(name => {
             // return components.listItem({name})
-            return Component.sub(components.listItems[name], this, {name})
+            return this.subComponent(listItemFactory({
+              name: `listItem_${name}`
+            }), {name})
           }).join('')}
         </ol>`
       },
