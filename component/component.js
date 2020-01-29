@@ -19,6 +19,7 @@ class Component {
     this.optionFactory('currentChildren', [])
     this.optionFactory('lastRenderChildren', [])
     this.optionFactory('parentDataAlreadySet', false)
+    this.optionFactory('lastParentData', '{}')
     this.optionFactory('alreadyMounted', false)
     this.optionFactory('needRerender', true)
     this.optionFactory('lastRenderContent', '')
@@ -83,9 +84,16 @@ class Component {
   }
 
   setDataFromParent (dataObject) {
-    if (this.parentDataAlreadySet()) return
-    this.parentDataAlreadySet(true)
-    this.setData(dataObject, false)
+    if (this.parentDataAlreadySet()) {
+      if (
+        this.lastParentData() === JSON.stringify(dataObject)
+      ) return
+      this.setData(dataObject, false)
+    } else {
+      this.parentDataAlreadySet(true)
+      this.setData(dataObject, false)
+    }
+    this.lastParentData(JSON.stringify(dataObject))
   }
 
   setParent (component) {

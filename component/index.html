@@ -20,28 +20,39 @@
           <div>
             <button onClick="${this.instance}.add()">Add</button>
             <button onClick="${this.instance}.remove()">Remove</button>
+            <button onClick="${this.instance}.rename()">Rename</button>
           </div>
           ${this.subComponent($list)}
         `
       },
       created () {
-        console.log('demo created')
+        console.warn('demo created')
       },
       mounted () {
-        console.log('demo mounted')
+        console.warn('demo mounted')
       },
       updated () {
-        console.log('demo updated')
+        console.warn('demo updated')
       },
       methods: {
         add () {
           const {list} = $list.data
-          list.push(`Item ${list.length + 1}`)
+          const index = list.length + 1
+          list.push({
+            id: `item${index}`,
+            name: `Item ${index}`
+          })
           $list.setData({list})
         },
         remove () {
           const {list} = $list.data
           list.pop()
+          $list.setData({list})
+        },
+        rename () {
+          const {list} = $list.data
+          if (!list.length) return
+          list[0].name += 'x'
           $list.setData({list})
         }
       }
@@ -51,17 +62,22 @@
       data () {
         const list = []
         for (let i = 0; i < 2; i++) {
-          list.push(`Item ${i + 1}`)
+          const index = i + 1
+          list.push({
+            id: `item${index}`,
+            name: `Item ${index}`
+          })
         }
         return {list}
       },
       render () {
         const {list} = this.data
         return `<ol>
-          ${list.map(name => {
+          ${list.map(item => {
+            const {id, name} = item
             // return listItem({name})
             return this.subComponent(listItemFactory({
-              instanceName: `listItem_${name}`
+              instanceName: `listItem_${id}`
             }), {name})
           }).join('')}
         </ol>`
@@ -91,7 +107,7 @@
           const {name, count} = this.data
           return `<li>
             ${name}.
-            count:${count}
+            count: ${count}
             <button onClick="${this.instance}.increase()">increase</button>
           </li>`
         },
