@@ -18,8 +18,8 @@
       render () {
         return `
           <div>
-            <button onClick="${this.name}.add()">Add</button>
-            <button onClick="${this.name}.remove()">Remove</button>
+            <button onClick="${this.instance}.add()">Add</button>
+            <button onClick="${this.instance}.remove()">Remove</button>
           </div>
           ${this.subComponent($list)}
         `
@@ -36,7 +36,7 @@
       methods: {
         add () {
           const {list} = $list.data
-          list.push(`Item${list.length + 1}`)
+          list.push(`Item ${list.length + 1}`)
           $list.setData({list})
         },
         remove () {
@@ -51,7 +51,7 @@
       data () {
         const list = []
         for (let i = 0; i < 2; i++) {
-          list.push(`Item${i + 1}`)
+          list.push(`Item ${i + 1}`)
         }
         return {list}
       },
@@ -61,7 +61,7 @@
           ${list.map(name => {
             // return listItem({name})
             return this.subComponent(listItemFactory({
-              name: `listItem_${name}`
+              instanceName: `listItem_${name}`
             }), {name})
           }).join('')}
         </ol>`
@@ -83,9 +83,8 @@
 
     function listItemFactory (options = {}) {
       return {
-        name: options.name,
+        instanceName: options.instanceName,
         data: {
-          name: null,
           count: 0
         },
         render () {
@@ -93,7 +92,7 @@
           return `<li>
             ${name}.
             count:${count}
-            <button onClick="${this.name}.increase()">increase</button>
+            <button onClick="${this.instance}.increase()">increase</button>
           </li>`
         },
         created () {

@@ -2,7 +2,8 @@ window._components = {}
 
 class Component {
   constructor (options = {}) {
-    this.name = options.name
+    this.instanceName = options.instanceName
+    this.instance = options.instance
     this.data = (
       typeof options.data === 'function' ?
       options.data() :
@@ -14,7 +15,9 @@ class Component {
     )
     this.methods = options.methods || {}
     this.selector = options.selector
-    this.parent = options.parent
+    this.optionFactory('parent', null)
+    this.optionFactory('currentChildren', [])
+    this.optionFactory('lastRenderChildren', [])
     this.optionFactory('parentDataAlreadySet', false)
     this.optionFactory('alreadyMounted', false)
     this.optionFactory('needRerender', true)
@@ -23,12 +26,13 @@ class Component {
       if (typeof options.render !== 'function') return ''
       const html = options.render.call(this)
       this.lastRenderContent(html)
+      this.handleSubComponents()
       this.needRerender(false)
       if (this.alreadyMounted()) {
-        this.triggerHook(this.getHook('updated'))
+        this.triggerHook('updated')
       } else {
         this.alreadyMounted(true)
-        this.triggerHook(this.getHook('mounted'))
+        this.triggerHook('mounted')
       }
       return html
     }
@@ -41,15 +45,14 @@ class Component {
       if (this[key]) return
       this[key] = this.methods[key].bind(this)
     })
-
-    this.triggerHook(this.getHook('created'))
+    this.triggerHook('created')
     this.update()
   }
 
-  optionFactory (funName, value) {
-    const property = `_${funName}`
+  optionFactory (name, value) {
+    const property = `_${name}`
     this[property] = value
-    this[funName] = option => {
+    this[name] = option => {
       if (typeof option === 'undefined') {
         return this[property]
       } else {
@@ -86,8 +89,9 @@ class Component {
   }
 
   setParent (component) {
-    if (this.parent) return
-    this.parent = component
+    component.currentChildren().push(this)
+    if (this.parent()) return
+    this.parent(component)
   }
 
   update () {
@@ -96,14 +100,15 @@ class Component {
       setTimeout(_ => {
         container.html(this.render())
       }, 0)
-    } else if (this.parent) {
-      this.parent.needRerender(true)
-      this.parent.update()
+    } else if (this.parent()) {
+      this.parent().needRerender(true)
+      this.parent().update()
     }
   }
 
-  triggerHook (funName) {
-    const fun = this[funName]
+  triggerHook (name) {
+    const hook = this.getHook(name)
+    const fun = this[hook]
     if (typeof fun === 'function') fun()
   }
 
@@ -112,15 +117,19 @@ class Component {
       typeof component === 'object' &&
       !(component instanceof Component)
     ) {
-      const componentName = `
-        ${this.name}__${component.name}
+      if (!component.instanceName) {
+        console.error('Sub component lacks of instance name.')
+        return ''
+      }
+      const instanceName = `
+        ${this.instanceName}__${component.instanceName}
       `.replace(/\s/g, '').replace('window._components.', '')
-      if (window._components[componentName]) {
-        component = window._components[componentName]
+      if (window._components[instanceName]) {
+        component = window._components[instanceName]
       } else {
         component = Component.create({
           ...component,
-          name: componentName
+          instanceName
         })
       }
     }
@@ -137,15 +146,32 @@ class Component {
     }
   }
 
+  handleSubComponents () {
+    const prevInstancesName = this.lastRenderChildren().map(instance => {
+      return instance.instanceName
+    })
+    const instancesName = this.currentChildren().map(instance => {
+      return instance.instanceName
+    })
+    prevInstancesName.forEach(name => {
+      if (!instancesName.includes(name)) {
+        delete window._components[name]
+      }
+    })
+    this.lastRenderChildren(this.currentChildren())
+    this.currentChildren([])
+  }
+
   static create (options = {}) {
-    const componentName = options.name ? options.name : `
+    const instanceName = options.instanceName ? options.instanceName : `
       C${Number(new Date())}
       ${String(Math.random()).replace('.', '')}
     `.replace(/\s/g, '')
-    window._components[componentName] = new Component({
+    window._components[instanceName] = new Component({
       ...options,
-      name: `window._components.${componentName}`
+      instanceName,
+      instance: `window._components.${instanceName}`
     })
-    return window._components[componentName]
+    return window._components[instanceName]
   }
 }
