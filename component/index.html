@@ -72,7 +72,7 @@
       },
       render () {
         const {list} = this.data
-        return `<ol>
+        return `<ul>
           ${list.map(item => {
             const {id, name} = item
             // return listItem({name})
@@ -80,7 +80,7 @@
               instanceName: `listItem_${id}`
             }), {name})
           }).join('')}
-        </ol>`
+        </ul>`
       },
       created () {
         console.log('list created')

@@ -2,8 +2,8 @@ window._components = {}
 
 class Component {
   constructor (options = {}) {
-    this.instanceName = options.instanceName
     this.instance = options.instance
+    this.instanceName = options.instanceName
     this.data = (
       typeof options.data === 'function' ?
       options.data() :
@@ -25,10 +25,11 @@ class Component {
     this.optionFactory('lastRenderContent', '')
     this.render = _ => {
       if (typeof options.render !== 'function') return ''
+      if (!this.needRerender()) return this.lastRenderContent()
       const html = options.render.call(this)
       this.lastRenderContent(html)
-      this.handleSubComponents()
       this.needRerender(false)
+      this.handleSubComponents()
       if (this.alreadyMounted()) {
         this.triggerHook('updated')
       } else {
@@ -71,10 +72,6 @@ class Component {
     return key ? hooks[key] : hooks
   }
 
-  getContainer () {
-    return $(this.selector)
-  }
-
   setData (dataObject, needUpdate = true) {
     Object.keys(dataObject).forEach(key => {
       this.data[key] = dataObject[key]
@@ -97,13 +94,12 @@ class Component {
   }
 
   setParent (component) {
+    if (!this.parent()) this.parent(component)
     component.currentChildren().push(this)
-    if (this.parent()) return
-    this.parent(component)
   }
 
   update () {
-    const container = this.getContainer()
+    const container = $(this.selector)
     if (container.length) {
       setTimeout(_ => {
         container.html(this.render())
@@ -144,11 +140,7 @@ class Component {
     if (component instanceof Component) {
       component.setParent(this)
       if (dataObject) component.setDataFromParent(dataObject)
-      return (
-        component.needRerender() ?
-        component.render() :
-        component.lastRenderContent()
-      )
+      return component.render()
     } else if (typeof component === 'function') {
       return component(dataObject)
     }
