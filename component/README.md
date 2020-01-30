@@ -1,5 +1,8 @@
 # Component
-A simple front end library for demo.
+A simple front end library for demo. [Demo](https://fringe.xiaoda.pro/component/)
+
+## Install
+Directly include the script & jQuery.
 
 ``` html
 <script src="jquery.js"></script>
