@@ -122,20 +122,20 @@ class Component {
       !(component instanceof Component)
     ) {
       if (!component.instanceName) {
-        console.error('Sub component lacks of instance name.')
+        console.error('Sub Component lacks of Instance Name.')
         return ''
       }
       const instanceName = `
         ${this.instanceName}__${component.instanceName}
-      `.replace(/\s/g, '').replace('window._components.', '')
-      if (window._components[instanceName]) {
-        component = window._components[instanceName]
-      } else {
-        component = Component.create({
+      `.replace(/\s/g, '')
+      component = (
+        window._components[instanceName] ?
+        window._components[instanceName] :
+        Component.create({
           ...component,
           instanceName
         })
-      }
+      )
     }
     if (component instanceof Component) {
       component.setParent(this)
@@ -147,12 +147,14 @@ class Component {
   }
 
   handleSubComponents () {
-    const prevInstancesName = this.lastRenderChildren().map(instance => {
-      return instance.instanceName
-    })
-    const instancesName = this.currentChildren().map(instance => {
-      return instance.instanceName
-    })
+    const prevInstancesName = this.lastRenderChildren()
+      .map(instance => {
+        return instance.instanceName
+      })
+    const instancesName = this.currentChildren()
+      .map(instance => {
+        return instance.instanceName
+      })
     prevInstancesName.forEach(name => {
       if (!instancesName.includes(name)) {
         delete window._components[name]
@@ -163,10 +165,14 @@ class Component {
   }
 
   static create (options = {}) {
-    const instanceName = options.instanceName ? options.instanceName : `
-      C${Number(new Date())}
-      ${String(Math.random()).replace('.', '')}
-    `.replace(/\s/g, '')
+    const instanceName = (
+      options.instanceName ?
+      options.instanceName :
+      `
+        C${Number(new Date())}
+        ${String(Math.random()).replace('.', '')}
+      `.replace(/\s/g, '')
+    )
     window._components[instanceName] = new Component({
       ...options,
       instanceName,
