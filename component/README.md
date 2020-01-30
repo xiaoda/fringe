@@ -1,6 +1,11 @@
 # Component
 A simple front end library for demo.
 
+``` html
+<script src="jquery.js"></script>
+<script src="component.js"></script>
+```
+
 ## Static Functions
 ### Component.create()
 创建组件实例
@@ -8,6 +13,9 @@ A simple front end library for demo.
 ## Instance Options
 ### instanceName
 实例名称（非必须、自动生成）
+
+### selector
+元素选择器（非必须）
 
 ### data || data()
 初始实例数据
