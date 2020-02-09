@@ -10,7 +10,7 @@ Directly include the script & jQuery.
 ```
 
 ## Static Functions
-### Component.create()
+### Component.create(options)
 创建组件实例
 
 ## Instance Options
@@ -30,8 +30,11 @@ Directly include the script & jQuery.
 自定义方法集合
 
 ## Instance Functions
-### instance.setData()
+### instance.setData(data)
 更新实例数据
+
+### instance.update()
+重新渲染
 
 ## Instance Lifecycle
 ### created()
