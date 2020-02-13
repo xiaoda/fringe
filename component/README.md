@@ -9,8 +9,8 @@ Directly include the script & jQuery.
 <script src="component.js"></script>
 ```
 
-## Static Functions
-### Component.create(options)
+## Instance
+### new Component(options)
 创建组件实例
 
 ## Instance Options
@@ -41,7 +41,10 @@ Directly include the script & jQuery.
 实例初始化
 
 ### mounted()
-实例首次执行过 render 方法
+实例首次执行 render 方法
 
 ### updated()
-实例后续执行过 render 方法
+实例后续执行 render 方法
+
+### beforeDetroy()
+实例销毁

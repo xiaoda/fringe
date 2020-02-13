@@ -71,8 +71,9 @@ class Component {
   getHook (key) {
     const hooks = {
       created: 'created',
+      mounted: 'mounted',
       updated: 'updated',
-      mounted: 'mounted'
+      beforeDestroy: 'beforeDestroy'
     }
     return key ? hooks[key] : hooks
   }
@@ -118,7 +119,13 @@ class Component {
   triggerHook (name) {
     const hook = this.getHook(name)
     const fun = this[hook]
-    if (typeof fun === 'function') fun()
+    if (typeof fun !== 'function') return
+    if (hook === this.getHook('beforeDestroy')) {
+      this.lastRenderChildren().forEach(child => {
+        child.triggerHook('beforeDestroy')
+      })
+    }
+    fun()
   }
 
   subComponent (component, dataObject) {
@@ -162,6 +169,7 @@ class Component {
       })
     prevInstancesName.forEach(name => {
       if (!instancesName.includes(name)) {
+        window._components[name].triggerHook('beforeDestroy')
         delete window._components[name]
       }
     })

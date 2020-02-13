@@ -108,6 +108,9 @@
             ${name}.
             count: ${count}
             <button onClick="${this.instance}.increase()">increase</button>
+            ` + this.subComponent(listItemLackeyFactory({
+              instanceName: `listItemLackey_${name}`
+            })) + `
           </li>`
         },
         created () {
@@ -119,12 +122,27 @@
         updated () {
           console.log(`listItem updated, name: ${this.data.name}`)
         },
+        beforeDestroy () {
+          console.log(`listItem beforeDestroy, name: ${this.data.name}`)
+        },
         methods: {
           increase () {
             let {count} = this.data
             count++
             this.setData({count})
           }
+        }
+      }
+    }
+
+    function listItemLackeyFactory (options = {}) {
+      return {
+        instanceName: options.instanceName,
+        render () {
+          return `<span>(lackey)</span>`
+        },
+        beforeDestroy () {
+          console.log('listItemLackey beforeDestroy')
         }
       }
     }
