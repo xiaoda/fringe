@@ -1,10 +1,11 @@
-import Currency from './currency.js'
-
 class House {
   constructor (options = {}) {
-    this.currencies = options.currencies || []
+    this.currencies = {}
+    options.currencies.forEach(currency => {
+      this.currencies[currency.name] = currency
+    })
     this.rates = this.generateRates(options.rates)
-    this.chargeRatio = .01
+    this.chargeRatio = options.chargeRatio || .01
   }
 
   generateRates (rawRates) {
@@ -14,19 +15,36 @@ class House {
       Object.keys(rawRates[currencyA]).forEach(currencyB => {
         if (!rates[currencyB]) rates[currencyB] = {}
         const rate = rawRates[currencyA][currencyB]
-        rates[currencyA][currencyB] = rate
-        rates[currencyB][currencyA] = 1 / rate
+        try {
+          _setRate(currencyA, currencyB, rate)
+          _setRate(currencyB, currencyA, 1 / rate)
+        } catch (e) {
+          console.error(e)
+        }
       })
     })
+
+    function _setRate (one, another, rate) {
+      if (
+        rates[one][another] &&
+        rates[one][another] !== rate
+      ) {
+        throw `Conflicted Currency Rate [${one}, ${another}]`
+      }
+      rates[one][another] = rate
+    }
+
     return rates
   }
 
-  changeRate (currencyA, currencyB, rate) {
+  getRate (currencyA, currencyB) {
+    return this.rates[currencyA][currencyB]
+  }
+
+  setRate (currencyA, currencyB, rate) {
     this.rates[currencyA][currencyB] = rate
     this.rates[currencyB][currencyA] = 1 / rate
   }
-
-  exchange () {}
 }
 
 export default House
