@@ -1,10 +1,10 @@
 class House {
   constructor (options = {}) {
-    this.currencies = {}
+    this.currencies = {} // Map, Instance
     options.currencies.forEach(currency => {
       this.currencies[currency.name] = currency
     })
-    this.rates = this.generateRates(options.rates)
+    this.rates = this.generateRates(options.rates) // Map
     this.chargeRatio = options.chargeRatio || .01
   }
 
@@ -29,7 +29,7 @@ class House {
         rates[one][another] &&
         rates[one][another] !== rate
       ) {
-        throw `Conflicted Currency Rate [${one}, ${another}]`
+        throw `Conflicted currency rate [${one}, ${another}]`
       }
       rates[one][another] = rate
     }
