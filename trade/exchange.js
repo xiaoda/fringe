@@ -1,4 +1,4 @@
-class House {
+class Exchange {
   constructor (options = {}) {
     this.currencies = {} // Map, Instance
     options.currencies.forEach(currency => {
@@ -47,4 +47,4 @@ class House {
   }
 }
 
-export default House
+export default Exchange

@@ -1,5 +1,5 @@
 import Currency from './currency.js'
-import House from './house.js'
+import Exchange from './exchange.js'
 import Investor from './investor.js'
 
 /* Currencies */
@@ -12,8 +12,8 @@ const USD = new Currency({
   interest: .05
 })
 
-/* Exchange house */
-const house = new House({
+/* Exchange */
+const exchange = new Exchange({
   currencies: [CNY, USD],
   rates: {
     USD: {

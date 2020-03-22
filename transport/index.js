@@ -15,11 +15,12 @@ const Hongkong = new City({
 })
 
 /* Airports */
-const PVG = new Airport({
+const airports = {}
+airports.PVG = new Airport({
   name: 'PVG',
   city: Shanghai
 })
-const HKG = new Airport({
+airports.HKG = new Airport({
   name: 'HKG',
   city: Hongkong
 })
