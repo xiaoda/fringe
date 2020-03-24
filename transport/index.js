@@ -1,12 +1,18 @@
+import Clock from './clock.js'
 import City from './city.js'
 import Airport from './airport.js'
 import Company from './company.js'
+
+/* Clock */
+const clock = new Clock({
+  rate: 50000
+})
 
 /* Cities */
 const Shanghai = new City({
   name: 'Shanghai',
   airports: ['PVG'],
-  population: 24240000, // 2018
+  population: 24240000, // until 2018
   travelRatio: .01,
   dests: {
     Hongkong: 1
@@ -15,18 +21,16 @@ const Shanghai = new City({
 const Hongkong = new City({
   name: 'Hongkong',
   airports: ['HKG'],
-  population: 7480000, // 2018
+  population: 7480000, // until 2018
   travelRatio: .01,
   dests: {
     Shanghai: 1
   }
 })
 const cities = {
-  Shanghai, Hongkong
+  [Shanghai.name]: Shanghai,
+  [Hongkong.name]: Hongkong
 }
-
-console.log('Shanghai', Shanghai.getTravelPopulation(Hongkong))
-console.log('Hongkong', Hongkong.getTravelPopulation(Shanghai))
 
 /* Airports */
 const PVG = new Airport({
@@ -38,7 +42,8 @@ const HKG = new Airport({
   city: Hongkong
 })
 const airports = {
-  PVG, HKG
+  [PVG.name]: PVG,
+  [HKG.name]: HKG
 }
 
 /* Companies */
@@ -46,5 +51,8 @@ const xiaoda = new Company({
   name: 'xiaoda'
 })
 const companies = {
-  xiaoda
+  [xiaoda.name]: xiaoda
 }
+
+/* GO! */
+clock.start()
