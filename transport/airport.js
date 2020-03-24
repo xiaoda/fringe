@@ -1,7 +1,7 @@
 class Airport {
   constructor (options = {}) {
     this.name = options.name
-    this.city = options.city // Instance
+    this.city = options.city // City instance
   }
 }
 
