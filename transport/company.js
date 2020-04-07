@@ -1,6 +1,6 @@
 class Company {
   constructor (options = {}) {
-    this.name = options.name
+    this.name = options.name || ''
   }
 }
 

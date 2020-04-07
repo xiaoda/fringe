@@ -13,7 +13,7 @@ const Shanghai = new City({
   name: 'Shanghai',
   airports: ['PVG'],
   population: 24240000, // until 2018
-  travelRatio: .01,
+  travelRatio: .05,
   dests: {
     Hongkong: 1
   }
@@ -22,7 +22,7 @@ const Hongkong = new City({
   name: 'Hongkong',
   airports: ['HKG'],
   population: 7480000, // until 2018
-  travelRatio: .01,
+  travelRatio: .1,
   dests: {
     Shanghai: 1
   }

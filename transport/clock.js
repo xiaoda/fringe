@@ -42,7 +42,7 @@ class Clock {
     this.pauseTimeStamp(currentTimeStamp)
   }
 
-  restart () {
+  continue () {
     let errorMsg
     if (!this.startTimeStamp()) {
       errorMsg = 'Clock not started yet.'
@@ -82,7 +82,7 @@ class Clock {
       minutes ? `${minutes % 60}m` : '',
       seconds ? `${seconds % 60}s` : ''
     ].join(' ').trim()
-    return [timeText, milliseconds]
+    return [milliseconds, timeText]
   }
 }
 

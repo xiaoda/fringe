@@ -1,11 +1,11 @@
 class City {
   constructor (options = {}) {
-    this.name = options.name
-    this.airports = options.airports || [] // Airport name
+    this.name = options.name || ''
+    this.airports = options.airports || [/* Airport name */]
     this.population = options.population || 0
     this.travelRatio = options.travelRatio || 0
     this.travelPopulation = this.population * this.travelRatio
-    this.dests = options.dests || {}
+    this.dests = options.dests || {/* City: Portion */}
     this.destsSum = (
       Object.keys(this.dests).length ?
       Object.keys(this.dests)
@@ -39,6 +39,12 @@ class City {
     }
 
     return this._travelPopulation[city.name]
+  }
+
+  getCurrentTravelPopulation (city) {
+    if (!this._currentTravelPopulation) {
+      this._currentTravelPopulation = {}
+    }
   }
 }
 
