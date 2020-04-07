@@ -5,8 +5,9 @@ import Company from './company.js'
 
 /* Clock */
 const clock = new Clock({
-  rate: 50000
+  rate: 5000
 })
+window.getPassedTime = _ => clock.getPassedTime()
 
 /* Cities */
 const Shanghai = new City({

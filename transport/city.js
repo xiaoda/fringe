@@ -13,6 +13,7 @@ class City {
         .reduce((acc, current) => acc + current) :
       0
     )
+    this.travelPopulationRiseRate = 1
   }
 
   getTravelPopulation (city) {
@@ -24,7 +25,6 @@ class City {
       )
       this._travelPopulation[city.name] = travelPopulation
     }
-
     function _getOneWayPopulation (depart, dest) {
       const destPortion = (
         depart.dests.hasOwnProperty(dest.name) ?
@@ -37,7 +37,6 @@ class City {
         destPortion / destsPortion
       )
     }
-
     return this._travelPopulation[city.name]
   }
 
@@ -45,6 +44,43 @@ class City {
     if (!this._currentTravelPopulation) {
       this._currentTravelPopulation = {}
     }
+    const [passedTime] = window.getPassedTime()
+    const travelPopulation = this.getTravelPopulation(city)
+    let currentTravelPopulation
+    if (this._currentTravelPopulation.hasOwnProperty(city.name)) {
+      const [
+        lastPassedTime, lastTravelPopulation
+      ] = this._currentTravelPopulation[city.name]
+      currentTravelPopulation = (
+        lastTravelPopulation +
+        travelPopulation * (passedTime - lastPassedTime) * this.travelPopulationRiseRate
+      )
+    } else {
+      currentTravelPopulation = (
+        travelPopulation * passedTime * this.travelPopulationRiseRate
+      )
+    }
+    currentTravelPopulation = GeometryUtils.clamp(
+      0, travelPopulation, currentTravelPopulation
+    )
+    this._currentTravelPopulation[city.name] = [
+      passedTime, currentTravelPopulation
+    ]
+    return currentTravelPopulation
+  }
+
+  changeCurrentTravelPopulation (city, variation) {
+    const [passedTime] = window.getPassedTime()
+    const travelPopulation = this.getTravelPopulation(city)
+    const currentTravelPopulation = this.getCurrentTravelPopulation(city)
+    const newCurrentTravelPopulation = GeometryUtils.clamp(
+      0, travelPopulation, currentTravelPopulation + variation
+    )
+    const actualVariation = newCurrentTravelPopulation - currentTravelPopulation
+    this._currentTravelPopulation[city.name] = [
+      passedTime, newCurrentTravelPopulation
+    ]
+    return actualVariation
   }
 }
 
