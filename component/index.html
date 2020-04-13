@@ -108,9 +108,9 @@
             ${name}.
             count: ${count}
             <button onClick="${this.instance}.increase()">increase</button>
-            ` + this.subComponent(listItemLackeyFactory({
+            ${this.subComponent(listItemLackeyFactory({
               instanceName: `listItemLackey_${name}`
-            })) + `
+            }))}
           </li>`
         },
         created () {

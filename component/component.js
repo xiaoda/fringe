@@ -82,8 +82,10 @@ class Component {
     Object.keys(dataObject).forEach(key => {
       this.data[key] = dataObject[key]
     })
-    this.needRerender(true)
-    if (needUpdate) this.update()
+    if (needUpdate) {
+      this.needRerender(true)
+      this.update()
+    }
   }
 
   setDataFromParent (dataObject) {

@@ -25,6 +25,7 @@ class City {
       )
       this._travelPopulation[city.name] = travelPopulation
     }
+
     function _getOneWayPopulation (depart, dest) {
       const destPortion = (
         depart.dests.hasOwnProperty(dest.name) ?
@@ -37,6 +38,7 @@ class City {
         destPortion / destsPortion
       )
     }
+
     return this._travelPopulation[city.name]
   }
 

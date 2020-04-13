@@ -8,6 +8,12 @@ const clock = new Clock({
   rate: 5000
 })
 window.getPassedTime = _ => clock.getPassedTime()
+window.clockAction = action => {
+  if (
+    !['start', 'pause', 'continue', 'reset'].includes(action)
+  ) return
+  clock[action]()
+}
 
 /* Cities */
 const Shanghai = new City({
@@ -55,5 +61,6 @@ const companies = {
   [xiaoda.name]: xiaoda
 }
 
-/* GO! */
-clock.start()
+/* Page */
+$clockBlock.setData({rate: clock.rate})
+$citiesBlock.setData({cities})

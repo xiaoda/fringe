@@ -64,24 +64,35 @@ class Clock {
   }
 
   getPassedTime () {
-    const currentTimeStamp = new Date().getTime()
+    let milliseconds
     const startTimeStamp = this.startTimeStamp()
-    const pausedTime = this.pausedTime()
-    const milliseconds = (currentTimeStamp - startTimeStamp - pausedTime) * this.rate
-    const seconds = Math.floor(milliseconds / 1000)
-    const minutes = Math.floor(seconds      / 60  )
-    const hours   = Math.floor(minutes      / 60  )
-    const days    = Math.floor(hours        / 24  )
-    const months  = Math.floor(days         / 30  )
-    const years   = Math.floor(months       / 12  )
-    const timeText = [
-      years   ? `${years}y`        : '',
-      months  ? `${months % 12}m`  : '',
-      days    ? `${days % 30}d`    : '',
-      hours   ? `${hours % 24}h`   : '',
-      minutes ? `${minutes % 60}m` : '',
-      seconds ? `${seconds % 60}s` : ''
-    ].join(' ').trim()
+    if (startTimeStamp) {
+      const currentTimeStamp = new Date().getTime()
+      const pausedTime = this.pausedTime()
+      milliseconds = (currentTimeStamp - startTimeStamp - pausedTime) * this.rate
+    } else {
+      milliseconds = 0
+    }
+    const timeText = _generateTimeText(milliseconds)
+
+    function _generateTimeText (milliseconds) {
+      const seconds = Math.floor(milliseconds / 1000)
+      const minutes = Math.floor(seconds      / 60  )
+      const hours   = Math.floor(minutes      / 60  )
+      const days    = Math.floor(hours        / 24  )
+      const months  = Math.floor(days         / 30  )
+      const years   = Math.floor(months       / 12  )
+      const timeText = [
+        years   ? `${years}y`        : '',
+        months  ? `${months % 12}m`  : '',
+        days    ? `${days % 30}d`    : '',
+        hours   ? `${hours % 24}h`   : '',
+        minutes ? `${minutes % 60}m` : '',
+        `${seconds % 60}s`
+      ].join(' ').trim()
+      return timeText
+    }
+
     return [milliseconds, timeText]
   }
 }
