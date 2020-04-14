@@ -53,7 +53,9 @@ class Component {
       this[key] = this.methods[key].bind(this)
     })
     this.triggerHook('created')
-    this.update()
+    setTimeout(_ => {
+      this.update()
+    }, 0)
   }
 
   optionFactory (name, value) {
@@ -82,8 +84,8 @@ class Component {
     Object.keys(dataObject).forEach(key => {
       this.data[key] = dataObject[key]
     })
+    this.needRerender(true)
     if (needUpdate) {
-      this.needRerender(true)
       this.update()
     }
   }
@@ -109,9 +111,7 @@ class Component {
   update () {
     const container = document.getElementById(this.elementId)
     if (container) {
-      setTimeout(_ => {
-        container.innerHTML = this.render()
-      }, 0)
+      container.innerHTML = this.render()
     } else if (this.parent()) {
       this.parent().needRerender(true)
       this.parent().update()

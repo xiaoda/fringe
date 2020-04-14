@@ -12,6 +12,7 @@ const $clockBlock = new Component({
     }
   },
   created () {
+    return
     GeometryUtils.setIntervalCustom(_ => {
       const [milliseconds, timeText] = window.getPassedTime()
       this.setData({timeText})
@@ -27,7 +28,7 @@ const $clockBlock = new Component({
           const button = buttons[name]
           return `
             <button
-              onClick="${this.instance}.clockAction(${name})"
+              onClick="${this.instance}.clockAction('${name}')"
               ${button.disabled ? 'disabled' : ''}
             >
               ${name[0].toUpperCase()}${name.slice(1)}
@@ -65,7 +66,28 @@ const $clockBlock = new Component({
       this.changeButtonsState()
     },
     changeButtonsState () {
-      const {status} = this.data
+      const {status, buttons} = this.data
+      switch (status) {
+        case 'initial':
+          buttons.start.disabled = false
+          buttons.pause.disabled = true
+          buttons.continue.disabled = true
+          buttons.reset.disabled = true
+          break
+        case 'running':
+          buttons.start.disabled = true
+          buttons.pause.disabled = false
+          buttons.continue.disabled = true
+          buttons.reset.disabled = false
+          break
+        case 'paused':
+          buttons.start.disabled = true
+          buttons.pause.disabled = true
+          buttons.continue.disabled = false
+          buttons.reset.disabled = false
+          break
+      }
+      this.setData({buttons})
     }
   }
 })
