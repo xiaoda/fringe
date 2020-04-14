@@ -80,17 +80,26 @@ class Component {
     return key ? hooks[key] : hooks
   }
 
-  setData (dataObject, needUpdate = true) {
+  setData (
+    dataObject = {},
+    needUpdate = true,
+    options = {}
+  ) {
+    const {
+      partlyUpdateElementId
+    } = options
     Object.keys(dataObject).forEach(key => {
       this.data[key] = dataObject[key]
     })
     this.needRerender(true)
     if (needUpdate) {
-      this.update()
+      this.update({
+        partlyUpdateElementId
+      })
     }
   }
 
-  setDataFromParent (dataObject) {
+  setDataFromParent (dataObject = {}) {
     if (this.parentDataAlreadySet()) {
       if (
         this.lastParentData() === JSON.stringify(dataObject)
@@ -108,9 +117,22 @@ class Component {
     component.currentChildren().push(this)
   }
 
-  update () {
+  update (options = {}) {
+    const {
+      partlyUpdateElementId
+    } = options
+    const partlyUpdateElement = document.getElementById(
+      partlyUpdateElementId
+    )
     const container = document.getElementById(this.elementId)
-    if (container) {
+    if (partlyUpdateElement) {
+      const newDOM = new DOMParser()
+        .parseFromString(this.render(), 'text/html')
+        .getElementById(partlyUpdateElementId)
+      const newHTML = new XMLSerializer()
+        .serializeToString(newDOM)
+      partlyUpdateElement.innerHTML = newHTML
+    } else if (container) {
       container.innerHTML = this.render()
     } else if (this.parent()) {
       this.parent().needRerender(true)

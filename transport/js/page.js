@@ -12,10 +12,11 @@ const $clockBlock = new Component({
     }
   },
   created () {
-    return
     GeometryUtils.setIntervalCustom(_ => {
       const [milliseconds, timeText] = window.getPassedTime()
-      this.setData({timeText})
+      this.setData({timeText}, true, {
+        partlyUpdateElementId: 'clockTable'
+      })
     }, 2000, 50)
   },
   render () {
@@ -36,7 +37,7 @@ const $clockBlock = new Component({
           `
         }).join('')}
       </div>
-      <table border>
+      <table id="clockTable" border>
         <thead>
           <tr>
             <th>Rate</th>
