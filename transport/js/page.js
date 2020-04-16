@@ -1,23 +1,19 @@
 const $clockBlock = new Component({
   elementId: 'clockBlock',
-  data: {
-    rate: 1,
-    timeText: '',
-    status: 'initial',
-    buttons: {
-      start:    {disabled: false},
-      pause:    {disabled: true},
-      continue: {disabled: true},
-      reset:    {disabled: true}
+  data () {
+    const data = {
+      rate: 1,
+      status: 'initial',
+      initialTimeText: '0h',
+      buttons: {
+        start:    {disabled: false},
+        pause:    {disabled: true},
+        continue: {disabled: true},
+        reset:    {disabled: true}
+      }
     }
-  },
-  created () {
-    GeometryUtils.setIntervalCustom(_ => {
-      const [milliseconds, timeText] = window.getPassedTime()
-      this.setData({timeText}, true, {
-        partlyUpdateElementId: 'clockTable'
-      })
-    }, 2000, 50)
+    data.timeText = data.initialTimeText
+    return data
   },
   render () {
     const {
@@ -54,8 +50,15 @@ const $clockBlock = new Component({
     `
   },
   methods: {
+    init () {
+      window.clock.registerCyclicCallback('hour', timeText => {
+        this.setData({timeText}, {
+          partlyUpdateElementId: 'clockTable'
+        })
+      })
+    },
     clockAction (action) {
-      window.clockAction(action)
+      window.clock[action]()
       const actionStatusMap = {
         start: 'running',
         pause: 'paused',
@@ -63,7 +66,9 @@ const $clockBlock = new Component({
         reset: 'initial'
       }
       const status = actionStatusMap[action]
-      this.setData({status}, false)
+      this.setData({status}, {
+        needUpdate: false
+      })
       this.changeButtonsState()
     },
     changeButtonsState () {

@@ -4,16 +4,9 @@ import Airport from './airport.js'
 import Company from './company.js'
 
 /* Clock */
-const clock = new Clock({
-  rate: 5000
+const clock = window.clock = new Clock({
+  rate: 1500
 })
-window.getPassedTime = _ => clock.getPassedTime()
-window.clockAction = action => {
-  if (
-    !['start', 'pause', 'continue', 'reset'].includes(action)
-  ) return
-  clock[action]()
-}
 
 /* Cities */
 const Shanghai = new City({
@@ -63,4 +56,5 @@ const companies = {
 
 /* Page */
 $clockBlock.setData({rate: clock.rate})
+$clockBlock.init()
 $citiesBlock.setData({cities})

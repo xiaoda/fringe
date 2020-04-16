@@ -80,12 +80,9 @@ class Component {
     return key ? hooks[key] : hooks
   }
 
-  setData (
-    dataObject = {},
-    needUpdate = true,
-    options = {}
-  ) {
+  setData (dataObject = {}, options = {}) {
     const {
+      needUpdate = true,
       partlyUpdateElementId
     } = options
     Object.keys(dataObject).forEach(key => {
@@ -104,10 +101,14 @@ class Component {
       if (
         this.lastParentData() === JSON.stringify(dataObject)
       ) return
-      this.setData(dataObject, false)
+      this.setData(dataObject, {
+        needUpdate: false
+      })
     } else {
       this.parentDataAlreadySet(true)
-      this.setData(dataObject, false)
+      this.setData(dataObject, {
+        needUpdate: false
+      })
     }
     this.lastParentData(JSON.stringify(dataObject))
   }

@@ -46,7 +46,7 @@ class City {
     if (!this._currentTravelPopulation) {
       this._currentTravelPopulation = {}
     }
-    const [passedTime] = window.getPassedTime()
+    const [passedTime] = window.clock.getPassedTime()
     const travelPopulation = this.getTravelPopulation(city)
     let currentTravelPopulation
     if (this._currentTravelPopulation.hasOwnProperty(city.name)) {
@@ -72,7 +72,7 @@ class City {
   }
 
   changeCurrentTravelPopulation (city, variation) {
-    const [passedTime] = window.getPassedTime()
+    const [passedTime] = window.clock.getPassedTime()
     const travelPopulation = this.getTravelPopulation(city)
     const currentTravelPopulation = this.getCurrentTravelPopulation(city)
     const newCurrentTravelPopulation = GeometryUtils.clamp(
