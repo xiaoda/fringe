@@ -5,7 +5,7 @@ class City {
     this.population = options.population || 0
     this.travelRatio = options.travelRatio || 0
     this.travelPopulation = this.population * this.travelRatio
-    this.dests = options.dests || {/* City: Portion */}
+    this.dests = options.dests || {/* City: Proportion */}
     this.destsSum = (
       Object.keys(this.dests).length ?
       Object.keys(this.dests)
@@ -13,32 +13,29 @@ class City {
         .reduce((acc, current) => acc + current) :
       0
     )
-    this.travelPopulationRiseRate = 1
+    this.travelPopulationRiseRate = .000000000005
   }
 
   getTravelPopulation (city) {
     if (!this._travelPopulation) this._travelPopulation = {}
     if (!this._travelPopulation.hasOwnProperty(city.name)) {
-      const travelPopulation = (
+      this._travelPopulation[city.name] = (
         _getOneWayPopulation(this, city) +
         _getOneWayPopulation(city, this)
       )
-      this._travelPopulation[city.name] = travelPopulation
     }
-
     function _getOneWayPopulation (depart, dest) {
-      const destPortion = (
+      const destProportion = (
         depart.dests.hasOwnProperty(dest.name) ?
         depart.dests[dest.name] :
         0
       )
-      const destsPortion = depart.destsSum || 1
-      return (
+      const destsProportion = depart.destsSum || 1
+      return Math.floor(
         depart.population * depart.travelRatio *
-        destPortion / destsPortion
+        destProportion / destsProportion
       )
     }
-
     return this._travelPopulation[city.name]
   }
 
@@ -55,11 +52,15 @@ class City {
       ] = this._currentTravelPopulation[city.name]
       currentTravelPopulation = (
         lastTravelPopulation +
-        travelPopulation * (passedTime - lastPassedTime) * this.travelPopulationRiseRate
+        Math.floor(
+          travelPopulation *
+          (passedTime - lastPassedTime) * this.travelPopulationRiseRate
+        )
       )
     } else {
-      currentTravelPopulation = (
-        travelPopulation * passedTime * this.travelPopulationRiseRate
+      currentTravelPopulation = Math.floor(
+        travelPopulation *
+        passedTime * this.travelPopulationRiseRate
       )
     }
     currentTravelPopulation = GeometryUtils.clamp(
@@ -71,7 +72,8 @@ class City {
     return currentTravelPopulation
   }
 
-  changeCurrentTravelPopulation (city, variation) {
+  changeCurrentTravelPopulation (city, variation = 0) {
+    variation = Math.floor(variation)
     const [passedTime] = window.clock.getPassedTime()
     const travelPopulation = this.getTravelPopulation(city)
     const currentTravelPopulation = this.getCurrentTravelPopulation(city)

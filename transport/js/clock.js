@@ -81,6 +81,7 @@ class Clock {
       const callbacks = this.cyclicCallbacks[cycle]
       const timeTextUnit = cycle[0]
       callbacks.forEach(callback => {
+        if (typeof callback !== 'function') return
         callback(`0${timeTextUnit}`)
       })
     }
@@ -127,6 +128,7 @@ class Clock {
       if (year   !== latestYear)   changedCycles.push('year')
       changedCycles.forEach(cycle => {
         this.cyclicCallbacks[cycle].forEach(callback => {
+          if (typeof callback !== 'function') return
           callback(Clock.shortenTimeText(timeText, cycle))
         })
       })
@@ -147,7 +149,7 @@ class Clock {
   }
 
   unregisterCyclicCallback (cycle, callbackIndex) {
-    this.cyclicCallbacks[cycle].splice(callbackIndex, 1)
+    this.cyclicCallbacks[cycle][callbackIndex] = null
   }
 
   static generateTimeText (milliseconds) {
@@ -170,7 +172,8 @@ class Clock {
 
   static shortenTimeText (timeText, cycle) {
     const reference = [
-      'second', 'minute', 'hour', 'day', 'month', 'year'
+      'second', 'minute', 'hour',
+      'day', 'month', 'year'
     ]
     const shortenedTimeText = timeText
       .split(' ')

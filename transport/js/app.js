@@ -5,7 +5,7 @@ import Company from './company.js'
 
 /* Clock */
 const clock = window.clock = new Clock({
-  rate: 1500
+  rate: 1000
 })
 
 /* Cities */
