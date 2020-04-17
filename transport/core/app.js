@@ -55,6 +55,6 @@ const companies = {
 }
 
 /* Page */
-$clockBlock.setData({rate: clock.rate})
-$clockBlock.init()
-$citiesBlock.setData({cities})
+$clockComponent.setData({rate: clock.rate})
+$clockComponent.init()
+$citiesComponent.setData({cities})
