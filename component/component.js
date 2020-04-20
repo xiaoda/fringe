@@ -141,6 +141,13 @@ class Component {
     }
   }
 
+  forceUpdate (options = {}) {
+    this.setData({}, {
+      ...options,
+      needUpdate: true
+    })
+  }
+
   triggerHook (name) {
     const hook = this.getHook(name)
     const fun = this[hook]

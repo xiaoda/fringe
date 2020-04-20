@@ -1,11 +1,16 @@
+const RATE = 1000
+
 class Clock {
   constructor (options = {}) {
-    this.rate = options.rate || 1
+    this.rate = options.rate || RATE
     this.optionFactory('startTimeStamp', null)
     this.optionFactory('pauseTimeStamp', null)
     this.optionFactory('pausedTime', 0)
-    this.optionFactory('latestTimeText', Clock.generateTimeText(0))
     this.optionFactory('cyclicTimerID', null)
+    this.optionFactory(
+      'latestTimeText',
+      Clock.generateTimeText(0)
+    )
     this.cyclicCallbacks = {
       year:   [],
       month:  [],
@@ -122,10 +127,10 @@ class Clock {
       ] = latestTimeText.split(' ').reverse()
       if (second !== latestSecond) changedCycles.push('second')
       if (minute !== latestMinute) changedCycles.push('minute')
-      if (hour   !== latestHour)   changedCycles.push('hour')
-      if (day    !== latestDay)    changedCycles.push('day')
-      if (month  !== latestMonth)  changedCycles.push('month')
-      if (year   !== latestYear)   changedCycles.push('year')
+      if (hour   !== latestHour  ) changedCycles.push('hour')
+      if (day    !== latestDay   ) changedCycles.push('day')
+      if (month  !== latestMonth ) changedCycles.push('month')
+      if (year   !== latestYear  ) changedCycles.push('year')
       changedCycles.forEach(cycle => {
         this.cyclicCallbacks[cycle].forEach(callback => {
           if (typeof callback !== 'function') return

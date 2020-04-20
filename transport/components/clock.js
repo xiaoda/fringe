@@ -7,9 +7,9 @@ const $clockComponent = new Component({
       timeText: '0h',
       buttons: {
         start:    {disabled: false},
-        pause:    {disabled: true},
-        continue: {disabled: true},
-        reset:    {disabled: true}
+        pause:    {disabled: true },
+        continue: {disabled: true },
+        reset:    {disabled: true }
       }
     }
   },
@@ -53,7 +53,7 @@ const $clockComponent = new Component({
         this.setData({timeText}, {
           partlyUpdateElementId: 'clockTable'
         })
-        $citiesComponent.setData()
+        $citiesComponent.forceUpdate()
       })
     },
     clockAction (action) {

@@ -4,9 +4,7 @@ import Airport from './airport.js'
 import Company from './company.js'
 
 /* Clock */
-const clock = window.clock = new Clock({
-  rate: 1000
-})
+const clock = window.clock = new Clock()
 
 /* Cities */
 const Shanghai = new City({
@@ -58,3 +56,4 @@ const companies = {
 $clockComponent.setData({rate: clock.rate})
 $clockComponent.init()
 $citiesComponent.setData({cities})
+$companiesComponent.setData({companies})

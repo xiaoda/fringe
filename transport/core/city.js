@@ -1,3 +1,5 @@
+const TRAVEL_POPULATION_RIZE_RATE = .000000000005
+
 class City {
   constructor (options = {}) {
     this.name = options.name || ''
@@ -13,7 +15,7 @@ class City {
         .reduce((acc, current) => acc + current) :
       0
     )
-    this.travelPopulationRiseRate = .000000000005
+    this.travelPopulationRiseRate = TRAVEL_POPULATION_RIZE_RATE
   }
 
   getTravelPopulation (city) {
