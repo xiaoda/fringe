@@ -1,7 +1,11 @@
-const RATE = 1000
+import BaseClass from './base.js'
 
-class Clock {
+/* Constants */
+const RATE = 1500
+
+class Clock extends BaseClass {
   constructor (options = {}) {
+    super()
     this.rate = options.rate || RATE
     this.optionFactory('startTimeStamp', null)
     this.optionFactory('pauseTimeStamp', null)
@@ -18,18 +22,6 @@ class Clock {
       hour:   [],
       minute: [],
       second: []
-    }
-  }
-
-  optionFactory (name, value) {
-    const property = `_${name}`
-    this[property] = value
-    this[name] = option => {
-      if (typeof option === 'undefined') {
-        return this[property]
-      } else {
-        this[property] = option
-      }
     }
   }
 

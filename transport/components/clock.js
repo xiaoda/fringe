@@ -18,6 +18,7 @@ const $clockComponent = new Component({
       rate, timeText, buttons
     } = this.data
     return `
+      <h3>Clock</h3>
       <div>
         ${Object.keys(buttons).map(name => {
           const button = buttons[name]
@@ -36,6 +37,7 @@ const $clockComponent = new Component({
           <tr>
             <th>Rate</th>
             <th>Time</th>
+            <th>Date</th>
           </tr>
         </thead>
         <tbody>

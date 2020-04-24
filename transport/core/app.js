@@ -1,6 +1,7 @@
 import Clock from './clock.js'
 import City from './city.js'
 import Airport from './airport.js'
+import Airplane from './airplane.js'
 import Company from './company.js'
 
 /* Clock */
@@ -44,9 +45,20 @@ const airports = {
   [HKG.name]: HKG
 }
 
+/* Airplanes */
+const {AIRBUS_250} = Airplane.models()
+const airbusNo1 = new Airplane({
+  name: 'AirbusNo1',
+  model: AIRBUS_250,
+  airport: PVG
+})
+
 /* Companies */
 const xiaoda = new Company({
-  name: 'xiaoda'
+  name: 'xiaoda',
+  airplanes: {
+    [airbusNo1.name]: airbusNo1
+  }
 })
 const companies = {
   [xiaoda.name]: xiaoda

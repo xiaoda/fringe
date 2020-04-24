@@ -1,9 +1,13 @@
+import BaseClass from './base.js'
+
+/* Constants */
 const TRAVEL_POPULATION_RIZE_RATE = .000000000005
 
-class City {
+class City extends BaseClass {
   constructor (options = {}) {
+    super()
     this.name = options.name || ''
-    this.airports = options.airports || [/* Airport name */]
+    this.airports = options.airports || [/* Airport Name */]
     this.population = options.population || 0
     this.travelRatio = options.travelRatio || 0
     this.travelPopulation = this.population * this.travelRatio

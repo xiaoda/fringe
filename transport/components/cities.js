@@ -6,6 +6,7 @@ const $citiesComponent = new Component({
   render () {
     const {cities} = this.data
     return `
+      <h3>Cities</h3>
       <table border>
         <thead>
           <tr>
