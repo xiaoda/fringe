@@ -1,4 +1,5 @@
 import BaseClass from './base.js'
+import Flight from './flight.js'
 
 /* Constants */
 const AIRBUS_250 = 'airbus250'
@@ -10,11 +11,24 @@ class Airplane extends BaseClass {
     this.model = options.model || ''
     const modelData = Airplane.getModelData(this.model)
     this.seats = modelData.seats || 0
-    this.optionFactory('flight', null)
+    this.optionFactory('flight', null /* Flight Instance */)
     this.optionFactory(
       'airport',
       options.airport /* Airport Instance */
     )
+  }
+
+  createFlight (options = {}) {
+    const {
+      departAirport, destAirport
+    } = options
+    const flight = new Flight({
+      airplane: this,
+      departAirport,
+      destAirport
+    })
+    this.flight(flight)
+    flight.takeoff()
   }
 
   static models () {

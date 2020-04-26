@@ -1,13 +1,21 @@
 const $companiesComponent = new Component({
   elementId: 'companiesComponent',
   data: {
-    companies: {}
+    companies: {},
+    airports: {}
   },
   render () {
     const {companies} = this.data
     return `
       <h3>Companies</h3>
-      <table border>
+      <div>
+        <button
+          onClick="${this.instance}.createFlight()"
+        >
+          Create Flight
+        </button>
+      </div>
+      <table id="companiesTable" border>
         <thead>
           <tr>
             <th rowspan="2">Name</th>
@@ -22,10 +30,10 @@ const $companiesComponent = new Component({
             <th rowspan="2">to Arrive</th>
           </tr>
           <tr>
-            <th>Airport</th>
             <th>City</th>
             <th>Airport</th>
             <th>City</th>
+            <th>Airport</th>
           </tr>
         </thead>
         <tbody>
@@ -44,8 +52,8 @@ const $companiesComponent = new Component({
                       '<span class="no">N</span>'
                     }
                   </td>
-                  <td>${airplane.airport().name}</td>
                   <td>${airplane.airport().city.name}</td>
+                  <td>${airplane.airport().name}</td>
                   <td></td>
                   <td></td>
                   <td>${airplane.seats}</td>
@@ -60,5 +68,23 @@ const $companiesComponent = new Component({
         </tbody>
       </table>
     `
+  },
+  methods: {
+    createFlight () {
+      const {
+        companies, airports
+      } = this.data
+      const airbusNo1 = companies.xiaoda.airplanes.AirbusNo1
+      const departAirport = airbusNo1.airport()
+      const destAirport = (
+        departAirport.name === 'PVG' ?
+        airports.HKG :
+        airports.PVG
+      )
+      airbusNo1.createFlight({
+        departAirport,
+        destAirport
+      })
+    }
   }
 })

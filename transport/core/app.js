@@ -68,4 +68,6 @@ const companies = {
 $clockComponent.setData({rate: clock.rate})
 $clockComponent.init()
 $citiesComponent.setData({cities})
-$companiesComponent.setData({companies})
+$companiesComponent.setData({
+  companies, airports
+})

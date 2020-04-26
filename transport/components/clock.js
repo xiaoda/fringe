@@ -58,6 +58,9 @@ const $clockComponent = new Component({
           partlyUpdateElementId: 'clockTable'
         })
         $citiesComponent.forceUpdate()
+        $companiesComponent.forceUpdate({
+          partlyUpdateElementId: 'companiesTable'
+        })
       })
     },
     generateDateTextFromTimeText (timeText) {
