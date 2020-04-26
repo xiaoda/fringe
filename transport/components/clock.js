@@ -1,10 +1,10 @@
 const $clockComponent = new Component({
   elementId: 'clockComponent',
   data () {
-    return {
+    const data = {
       rate: 1,
       status: 'initial',
-      timeText: '0h',
+      initialDateText: '01/01 00:00',
       buttons: {
         start:    {disabled: false},
         pause:    {disabled: true },
@@ -12,10 +12,12 @@ const $clockComponent = new Component({
         reset:    {disabled: true }
       }
     }
+    data.dateText = data.initialDateText
+    return data
   },
   render () {
     const {
-      rate, timeText, buttons
+      rate, dateText, buttons
     } = this.data
     return `
       <h3>Clock</h3>
@@ -36,14 +38,13 @@ const $clockComponent = new Component({
         <thead>
           <tr>
             <th>Rate</th>
-            <th>Time</th>
             <th>Date</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>${rate}</td>
-            <td>${timeText}</td>
+            <td>${dateText}</td>
           </tr>
         </tbody>
       </table>
@@ -52,11 +53,50 @@ const $clockComponent = new Component({
   methods: {
     init () {
       window.clock.registerCyclicCallback('hour', timeText => {
-        this.setData({timeText}, {
+        const dateText = this.generateDateTextFromTimeText(timeText)
+        this.setData({dateText}, {
           partlyUpdateElementId: 'clockTable'
         })
         $citiesComponent.forceUpdate()
       })
+    },
+    generateDateTextFromTimeText (timeText) {
+      const {initialDateText} = this.data
+      const [
+        initialDatePart, initialTimePart
+      ] = initialDateText.split(' ')
+      const [
+        initialMonth, initialDay
+      ] = initialDatePart.split('/')
+      const [
+        initialHour, initialMinute
+      ] = initialTimePart.split(':')
+      let dateArray = [
+        Number(initialMonth), Number(initialDay),
+        Number(initialHour), Number(initialMinute)
+      ]
+      timeText
+        .split(' ')
+        .map(text => Number(text.slice(0, text.length - 1)))
+        .reverse()
+        .forEach((value, index) => {
+          const dateIndex = dateArray.length - index - 2
+          if (dateIndex < 0) return
+          dateArray[dateIndex] = dateArray[dateIndex] + value
+        })
+      dateArray = dateArray.map(value => {
+        value = String(value)
+        return (
+          value.length < 2 ?
+          `0${value}` :
+          value
+        )
+      })
+      const dateText = `
+        ${dateArray[0]}/${dateArray[1]}
+        ${dateArray[2]}:${dateArray[3]}
+      `.trim().replace(/\s+/, ' ')
+      return dateText
     },
     clockAction (action) {
       window.clock[action]()
