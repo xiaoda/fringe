@@ -5,7 +5,7 @@ import Airplane from './airplane.js'
 import Company from './company.js'
 
 /* Clock */
-const clock = window.clock = new Clock()
+window.clock = new Clock()
 
 /* Cities */
 const Shanghai = new City({

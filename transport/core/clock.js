@@ -167,6 +167,51 @@ class Clock extends BaseClass {
     return timeText
   }
 
+  static generateMilliseconds (timeText) {
+    const timeArray = timeText.split(' ')
+    const units = [
+      'y', 'm', 'd', 'h', 'm', 's'
+    ]
+    const times = [
+      12 * 30 * 24 * 60 * 60,
+      30 * 24 * 60 * 60,
+      24 * 60 * 60,
+      60 * 60,
+      60,
+      1
+    ]
+    let seconds = 0
+    let tempIndex = 0
+    units.forEach((unit, index) => {
+      if (tempIndex > timeArray.length - 1) return
+      const timeItem = timeArray[tempIndex]
+      if (!timeItem.endsWith(unit)) return
+      else if (unit === 'm') {
+        const intactUnit = (
+          index === 2 ?
+          'month' :
+          'minute'
+        )
+        let currentUnit = 'minute'
+        if (
+          tempIndex - 1 >= 0 &&
+          timeArray[tempIndex].endsWith('y')
+        ) currentUnit = 'month'
+        else if (
+          tempIndex + 1 < timeArray.length &&
+          timeArray[tempIndex].endsWith('d')
+        ) currentUnit = 'month'
+        if (intactUnit !== currentUnit) return
+      }
+      let [value] = timeItem.match(/\d+/)
+      value = Number(value)
+      seconds += value * times[index]
+      tempIndex ++
+    })
+    const milliseconds = seconds * 1000
+    return milliseconds
+  }
+
   static shortenTimeText (timeText, cycle) {
     const reference = [
       'second', 'minute', 'hour',

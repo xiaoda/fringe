@@ -53,7 +53,7 @@ const $clockComponent = new Component({
   methods: {
     init () {
       window.clock.registerCyclicCallback('hour', timeText => {
-        const dateText = this.generateDateTextFromTimeText(timeText)
+        const dateText = this.generateDateText(timeText)
         this.setData({dateText}, {
           partlyUpdateElementId: 'clockTable'
         })
@@ -63,7 +63,7 @@ const $clockComponent = new Component({
         })
       })
     },
-    generateDateTextFromTimeText (timeText) {
+    generateDateText (timeText) {
       const {initialDateText} = this.data
       const [
         initialDatePart, initialTimePart
@@ -114,6 +114,7 @@ const $clockComponent = new Component({
         needUpdate: false
       })
       this.changeButtonsState()
+      $companiesComponent.forceUpdate()
     },
     changeButtonsState () {
       const {status, buttons} = this.data

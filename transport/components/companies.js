@@ -6,11 +6,13 @@ const $companiesComponent = new Component({
   },
   render () {
     const {companies} = this.data
+    const {status: clockStatus} = $clockComponent.data
     return `
       <h3>Companies</h3>
       <div>
         <button
           onClick="${this.instance}.createFlight()"
+          ${clockStatus === 'running' ? '' : 'disabled'}
         >
           Create Flight
         </button>
@@ -54,12 +56,40 @@ const $companiesComponent = new Component({
                   </td>
                   <td>${airplane.airport().city.name}</td>
                   <td>${airplane.airport().name}</td>
-                  <td></td>
-                  <td></td>
+                  <td>
+                    ${
+                      airplane.flight() ?
+                      airplane.flight().destAirport.name :
+                      ''
+                    }
+                  </td>
+                  <td>
+                    ${
+                      airplane.flight() ?
+                      airplane.flight().destCity.name :
+                      ''
+                    }
+                  </td>
                   <td>${airplane.seats}</td>
                   <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>
+                    ${
+                      airplane.flight() ?
+                      $clockComponent.generateDateText(
+                        airplane.flight().getTakeoffTimeText()
+                      ) :
+                      ''
+                    }
+                  </td>
+                  <td>
+                    ${
+                      airplane.flight() ?
+                      $clockComponent.generateDateText(
+                        airplane.flight().getArriveTimeText()
+                      ) :
+                      ''
+                    }
+                  </td>
                   <td></td>
                 </tr>
               `
