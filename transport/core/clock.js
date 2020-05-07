@@ -188,7 +188,7 @@ class Clock extends BaseClass {
       if (!timeItem.endsWith(unit)) return
       else if (unit === 'm') {
         const intactUnit = (
-          index === 2 ?
+          index === units.indexOf('m') ?
           'month' :
           'minute'
         )
@@ -217,12 +217,21 @@ class Clock extends BaseClass {
       'second', 'minute', 'hour',
       'day', 'month', 'year'
     ]
-    const shortenedTimeText = timeText
+    const units = [
+      's', 'm', 'h', 'd', 'm', 'y'
+    ]
+    const index = reference.indexOf(cycle)
+    let shortenedTimeText = timeText
       .split(' ')
       .reverse()
-      .slice(reference.indexOf(cycle))
+      .slice(index)
       .reverse()
       .join(' ')
+    shortenedTimeText = (
+      shortenedTimeText ?
+      shortenedTimeText :
+      `0${units[index]}`
+    )
     return shortenedTimeText
   }
 }

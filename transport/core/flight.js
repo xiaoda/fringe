@@ -45,6 +45,20 @@ class Flight extends BaseClass {
     return arriveTimeText
   }
 
+  getToArriveTimeText () {
+    const [currentTimeStamp] = window.clock.getPassedTime()
+    const arriveTimeStamp = this.arriveTimeStamp()
+    let toArriveMilliseconds = arriveTimeStamp - currentTimeStamp
+    if (toArriveMilliseconds < 0) {
+      toArriveMilliseconds = 0
+    }
+    const toArriveTimeText = Clock.shortenTimeText(
+      Clock.generateTimeText(toArriveMilliseconds),
+      'minute'
+    )
+    return toArriveTimeText
+  }
+
   static getFlightDuration (departCity, destCity) {
     const duration = (
       flightDuration[departCity.name][destCity.name] ||

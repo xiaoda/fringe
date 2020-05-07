@@ -69,24 +69,50 @@ const $clockComponent = new Component({
         initialDatePart, initialTimePart
       ] = initialDateText.split(' ')
       const [
-        initialMonth, initialDay
+        initialMonth = '01',
+        initialDay = '01'
       ] = initialDatePart.split('/')
       const [
-        initialHour, initialMinute
+        initialHour = '00',
+        initialMinute = '00',
+        initialSecond = '00'
       ] = initialTimePart.split(':')
       let dateArray = [
         Number(initialMonth), Number(initialDay),
-        Number(initialHour), Number(initialMinute)
+        Number(initialHour), Number(initialMinute),
+        Number(initialSecond)
       ]
-      timeText
-        .split(' ')
-        .map(text => Number(text.slice(0, text.length - 1)))
-        .reverse()
-        .forEach((value, index) => {
-          const dateIndex = dateArray.length - index - 2
-          if (dateIndex < 0) return
-          dateArray[dateIndex] = dateArray[dateIndex] + value
-        })
+      const timeArray = timeText.split(' ')
+      const units = [
+        'm', 'd', 'h', 'm', 's'
+      ]
+      let tempIndex = 0
+      units.forEach((unit, index) => {
+        if (tempIndex > timeArray.length - 1) return
+        const timeItem = timeArray[tempIndex]
+        if (!timeItem.endsWith(unit)) return
+        else if (unit === 'm') {
+          const intactUnit = (
+            index === units.indexOf('m') ?
+            'month' :
+            'minute'
+          )
+          let currentUnit = 'minute'
+          if (
+            tempIndex - 1 >= 0 &&
+            timeArray[tempIndex].endsWith('y')
+          ) currentUnit = 'month'
+          else if (
+            tempIndex + 1 < timeArray.length &&
+            timeArray[tempIndex].endsWith('d')
+          ) currentUnit = 'month'
+          if (intactUnit !== currentUnit) return
+        }
+        let [value] = timeItem.match(/\d+/)
+        value = Number(value)
+        dateArray[index] += value
+        tempIndex ++
+      })
       dateArray = dateArray.map(value => {
         value = String(value)
         return (

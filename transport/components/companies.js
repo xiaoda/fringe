@@ -90,7 +90,13 @@ const $companiesComponent = new Component({
                       ''
                     }
                   </td>
-                  <td></td>
+                  <td>
+                    ${
+                      airplane.flight() ?
+                      airplane.flight().getToArriveTimeText() :
+                      ''
+                    }
+                  </td>
                 </tr>
               `
             }).join('')
