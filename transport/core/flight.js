@@ -10,9 +10,10 @@ class Flight extends BaseClass {
     this.destAirport = options.destAirport /* Airport Instance */
     this.departCity = this.departAirport.city /* City Instance */
     this.destCity = this.destAirport.city /* City Instance */
+    this.optionFactory('status', 'initial')
     this.optionFactory('takeoffTimeStamp', 0)
     this.optionFactory('arriveTimeStamp', 0)
-    this.optionFactory('status', 'initial')
+    this.optionFactory('passengers', 0)
   }
 
   takeoff () {
@@ -24,8 +25,12 @@ class Flight extends BaseClass {
         this.departCity, this.destCity
       )
     )
+    const passengers = this.departAirport.transportToAirport(
+      this.destAirport, this.airplane.seats
+    )
     this.takeoffTimeStamp(currentTimeStamp)
     this.arriveTimeStamp(arriveTimeStamp)
+    this.passengers(passengers)
   }
 
   arrive () {

@@ -71,7 +71,13 @@ const $companiesComponent = new Component({
                     }
                   </td>
                   <td>${airplane.seats}</td>
-                  <td></td>
+                  <td>
+                    ${
+                      airplane.flight() ?
+                      airplane.flight().passengers() :
+                      ''
+                    }
+                  </td>
                   <td>
                     ${
                       airplane.flight() ?
