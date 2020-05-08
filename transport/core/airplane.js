@@ -25,7 +25,10 @@ class Airplane extends BaseClass {
     const flight = new Flight({
       airplane: this,
       departAirport,
-      destAirport
+      destAirport,
+      onArrive: _ => {
+        this.flight(null)
+      }
     })
     this.flight(flight)
     flight.takeoff()

@@ -22,7 +22,7 @@ const $companiesComponent = new Component({
           <tr>
             <th rowspan="2">Name</th>
             <th rowspan="2">Airplane</th>
-            <th rowspan="2">on Flight</th>
+            <th rowspan="2">in Flight</th>
             <th colspan="2">Location</th>
             <th colspan="2">Destination</th>
             <th rowspan="2">Seats</th>

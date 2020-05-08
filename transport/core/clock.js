@@ -15,6 +15,7 @@ class Clock extends BaseClass {
       'latestTimeText',
       Clock.generateTimeText(0)
     )
+    this.singleCallbacks = {}
     this.cyclicCallbacks = {
       year:   [],
       month:  [],
@@ -109,6 +110,15 @@ class Clock extends BaseClass {
       const [milliseconds, timeText] = this.getPassedTime()
       const latestTimeText = this.latestTimeText()
       if (timeText === latestTimeText) return
+      for (let timeStamp in this.singleCallbacks) {
+        if (milliseconds < timeStamp) continue
+        const callbacks = this.singleCallbacks[timeStamp]
+        callbacks.forEach(callback => {
+          if (typeof callback !== 'function') return
+          callback(timeStamp)
+        })
+        delete this.singleCallbacks[timeStamp]
+      }
       const changedCycles = []
       const [
         second, minute, hour, day, month, year
@@ -124,9 +134,11 @@ class Clock extends BaseClass {
       if (month  !== latestMonth ) changedCycles.push('month')
       if (year   !== latestYear  ) changedCycles.push('year')
       changedCycles.forEach(cycle => {
-        this.cyclicCallbacks[cycle].forEach(callback => {
+        const callbacks = this.cyclicCallbacks[cycle]
+        callbacks.forEach(callback => {
           if (typeof callback !== 'function') return
-          callback(Clock.shortenTimeText(timeText, cycle))
+          const shortenedTimeText = Clock.shortenTimeText(timeText, cycle)
+          callback(shortenedTimeText)
         })
       })
       this.latestTimeText(timeText)
@@ -137,6 +149,22 @@ class Clock extends BaseClass {
   stopTimer () {
     const cyclicTimerID = this.cyclicTimerID()
     clearInterval(cyclicTimerID)
+  }
+
+  registerSingleCallback (timeStamp, callback) {
+    const [currentTimeStamp] = this.getPassedTime()
+    if (timeStamp < currentTimeStamp) return null
+    if (!this.singleCallbacks[timeStamp]) {
+      this.singleCallbacks[timeStamp] = []
+    }
+    const callbacksCount = this.singleCallbacks[timeStamp].push(callback)
+    const callbackIndex = callbacksCount - 1
+    return callbackIndex
+  }
+
+  unregisterSingleCallback (timeStamp, callbackIndex) {
+    if (!this.singleCallbacks[timeStamp]) return
+    this.singleCallbacks[timeStamp][callbackIndex] = null
   }
 
   registerCyclicCallback (cycle, callback) {
