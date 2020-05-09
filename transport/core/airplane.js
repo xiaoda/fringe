@@ -28,6 +28,7 @@ class Airplane extends BaseClass {
       destAirport,
       onArrive: _ => {
         this.flight(null)
+        this.airport(destAirport)
       }
     })
     this.flight(flight)

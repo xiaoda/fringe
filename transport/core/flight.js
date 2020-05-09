@@ -70,8 +70,14 @@ class Flight extends BaseClass {
 
   static getFlightDuration (departCity, destCity) {
     const duration = (
-      flightDuration[departCity.name][destCity.name] ||
-      flightDuration[destCity.name][departCity.name]
+      (
+        flightDuration[departCity.name] &&
+        flightDuration[departCity.name][destCity.name]
+      ) ||
+      (
+        flightDuration[destCity.name] &&
+        flightDuration[destCity.name][departCity.name]
+      )
     )
     if (!duration) return null
     const milliseconds = Clock.generateMilliseconds(duration)
