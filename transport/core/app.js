@@ -65,9 +65,31 @@ const companies = {
 }
 
 /* Page */
-$clockComponent.setData({rate: clock.rate})
-$clockComponent.init()
-$citiesComponent.setData({cities})
-$companiesComponent.setData({
-  companies, airports
-})
+function initData () {
+  for (let companyName in companies) {
+    const company = companies[companyName]
+    const airplanes = company.airplanes
+    for (let airplaneName in airplanes) {
+      const airplane = airplanes[airplaneName]
+      airplane.flight(null)
+    }
+  }
+}
+window.initApp = _ => {
+  initData()
+  $clockComponent.setData({
+    ...$clockComponent.initialData,
+    rate: clock.rate
+  })
+  $clockComponent.init()
+  $citiesComponent.setData({
+    ...$citiesComponent.initialData,
+    cities
+  })
+  $companiesComponent.setData({
+    ...$companiesComponent.initialData,
+    companies,
+    airports
+  })
+}
+window.initApp()

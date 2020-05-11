@@ -14,7 +14,7 @@ const $companiesComponent = new Component({
           onClick="${this.instance}.createFlight()"
           ${clockStatus === 'running' ? '' : 'disabled'}
         >
-          Create Flight
+          New Flight
         </button>
       </div>
       <table id="companiesTable" border>

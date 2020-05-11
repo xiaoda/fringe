@@ -18,6 +18,7 @@ class Component {
         {}
       )
     )
+    this.initialData = JSON.parse(JSON.stringify(this.data))
     this.methods = options.methods || {}
     this.elementId = options.elementId
     this.optionFactory('parent', null)

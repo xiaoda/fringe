@@ -53,14 +53,22 @@ const $clockComponent = new Component({
   methods: {
     init () {
       window.clock.registerCyclicCallback('hour', timeText => {
-        const dateText = this.generateDateText(timeText)
-        this.setData({dateText}, {
-          partlyUpdateElementId: 'clockTable'
-        })
-        $citiesComponent.forceUpdate()
-        $companiesComponent.forceUpdate({
-          partlyUpdateElementId: 'companiesTable'
-        })
+        const isReset = (
+          timeText.split(' ').length === 1 &&
+          timeText.startsWith('0')
+        )
+        if (isReset) {
+          window.initApp()
+        } else {
+          const dateText = this.generateDateText(timeText)
+          this.setData({dateText}, {
+            partlyUpdateElementId: 'clockTable'
+          })
+          $citiesComponent.forceUpdate()
+          $companiesComponent.forceUpdate({
+            partlyUpdateElementId: 'companiesTable'
+          })
+        }
       })
     },
     generateDateText (timeText) {
