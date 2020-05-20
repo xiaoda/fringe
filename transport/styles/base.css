@@ -1,0 +1,7 @@
+body {font-family: PingFangSC-Light;}
+table {
+  margin: 15px 0;
+  text-align: center;
+}
+.yes {color: green;}
+.no {color: red;}

@@ -8,6 +8,7 @@ class Airplane extends BaseClass {
   constructor (options = {}) {
     super()
     this.name = options.name || ''
+    this.company = options.company || ''
     this.model = options.model || ''
     const modelData = Airplane.getModelData(this.model)
     this.seats = modelData.seats || 0

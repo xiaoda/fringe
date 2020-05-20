@@ -7,8 +7,8 @@ class Flight extends BaseClass {
     super()
     this.airplane = options.airplane /* Airplane Instance */
     this.departAirport = options.departAirport /* Airport Instance */
-    this.destAirport = options.destAirport /* Airport Instance */
     this.departCity = this.departAirport.city /* City Instance */
+    this.destAirport = options.destAirport /* Airport Instance */
     this.destCity = this.destAirport.city /* City Instance */
     this.onArrive = options.onArrive || (_ => {})
     this.optionFactory('status', 'initial')
@@ -32,9 +32,15 @@ class Flight extends BaseClass {
     this.takeoffTimeStamp(currentTimeStamp)
     this.arriveTimeStamp(arriveTimeStamp)
     this.passengers(passengers)
+    this.AddToFlightLogs()
     window.clock.registerSingleCallback(
       arriveTimeStamp, _ => this.arrive()
     )
+  }
+
+  AddToFlightLogs () {
+    if (!window.flightLogs) return
+    window.flightLogs.addLog(this)
   }
 
   arrive () {

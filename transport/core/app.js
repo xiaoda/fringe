@@ -2,10 +2,11 @@ import Clock from './clock.js'
 import City from './city.js'
 import Airport from './airport.js'
 import Airplane from './airplane.js'
+import FlightLogs from './flight-logs.js'
 import Company from './company.js'
 
 /* Clock */
-window.clock = new Clock()
+const clock = window.clock = new Clock()
 
 /* Cities */
 const Shanghai = new City({
@@ -49,9 +50,14 @@ const airports = {
 const {AIRBUS_250} = Airplane.models()
 const airbusNo1 = new Airplane({
   name: 'AirbusNo1',
+  company: 'xiaoda',
   model: AIRBUS_250,
   airport: PVG
 })
+
+/* Flight Logs */
+const flightLogs =
+window.flightLogs = new FlightLogs()
 
 /* Companies */
 const xiaoda = new Company({
