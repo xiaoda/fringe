@@ -20,7 +20,7 @@ const $companiesComponent = new Component({
       <table id="companiesTable" border>
         <thead>
           <tr>
-            <th rowspan="2">Name</th>
+            <th rowspan="2">Company</th>
             <th rowspan="2">Airplane</th>
             <th rowspan="2">in Flight</th>
             <th colspan="2">Location</th>
@@ -47,62 +47,48 @@ const $companiesComponent = new Component({
                 <tr>
                   ${index === 0 ? `<td rowspan="2">${name}</td>` : ''}
                   <td>${planeName}</td>
-                  <td>
-                    ${
-                      airplane.flight() ?
-                      '<span class="yes">Y</span>' :
-                      '<span class="no">N</span>'
-                    }
-                  </td>
+                  <td>${
+                    airplane.flight() ?
+                    '<span class="yes">Y</span>' :
+                    '<span class="no">N</span>'
+                  }</td>
                   <td>${airplane.airport().city.name}</td>
                   <td>${airplane.airport().name}</td>
-                  <td>
-                    ${
-                      airplane.flight() ?
-                      airplane.flight().destAirport.name :
-                      ''
-                    }
-                  </td>
-                  <td>
-                    ${
-                      airplane.flight() ?
-                      airplane.flight().destCity.name :
-                      ''
-                    }
-                  </td>
+                  <td>${
+                    airplane.flight() ?
+                    airplane.flight().destAirport.name :
+                    ''
+                  }</td>
+                  <td>${
+                    airplane.flight() ?
+                    airplane.flight().destCity.name :
+                    ''
+                  }</td>
                   <td>${airplane.seats}</td>
-                  <td>
-                    ${
-                      airplane.flight() ?
-                      airplane.flight().passengers() :
-                      ''
-                    }
-                  </td>
-                  <td>
-                    ${
-                      airplane.flight() ?
-                      $clockComponent.generateDateText(
-                        airplane.flight().getTakeoffTimeText()
-                      ) :
-                      ''
-                    }
-                  </td>
-                  <td>
-                    ${
-                      airplane.flight() ?
-                      $clockComponent.generateDateText(
-                        airplane.flight().getArriveTimeText()
-                      ) :
-                      ''
-                    }
-                  </td>
-                  <td>
-                    ${
-                      airplane.flight() ?
-                      airplane.flight().getToArriveTimeText() :
-                      ''
-                    }
-                  </td>
+                  <td>${
+                    airplane.flight() ?
+                    airplane.flight().passengers() :
+                    ''
+                  }</td>
+                  <td>${
+                    airplane.flight() ?
+                    $clockComponent.generateDateText(
+                      airplane.flight().getTakeoffTimeText()
+                    ) :
+                    ''
+                  }</td>
+                  <td>${
+                    airplane.flight() ?
+                    $clockComponent.generateDateText(
+                      airplane.flight().getArriveTimeText()
+                    ) :
+                    ''
+                  }</td>
+                  <td>${
+                    airplane.flight() ?
+                    airplane.flight().getToArriveTimeText() :
+                    ''
+                  }</td>
                 </tr>
               `
             }).join('')
@@ -117,6 +103,7 @@ const $companiesComponent = new Component({
         companies, airports
       } = this.data
       const airbusNo1 = companies.xiaoda.airplanes.AirbusNo1
+      if (airbusNo1.flight()) return
       const departAirport = airbusNo1.airport()
       const destAirport = (
         departAirport.name === 'PVG' ?

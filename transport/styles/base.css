@@ -3,5 +3,8 @@ table {
   margin: 15px 0;
   text-align: center;
 }
+table th,
+table td {padding: 0 5px;}
+table td {text-align: left;}
 .yes {color: green;}
 .no {color: red;}

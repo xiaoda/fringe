@@ -20,6 +20,19 @@ class FlightLogs extends BaseClass {
       arriveTimeText:  flight.getArriveTimeText()
     }
     this.logs.push(log)
+    this.broadcastNewLog(log)
+  }
+
+  clearLogs () {
+    this.logs = []
+  }
+
+  broadcastNewLog (log) {
+    if (!window.channel) return
+    window.channel.postMessage({
+      action: 'newFlightLog',
+      data: log
+    })
   }
 }
 

@@ -10,7 +10,7 @@ const $citiesComponent = new Component({
       <table border>
         <thead>
           <tr>
-            <th rowspan="3">Name</th>
+            <th rowspan="3">City</th>
             <th rowspan="3">Airports</th>
             <th rowspan="3">Population</th>
             <th

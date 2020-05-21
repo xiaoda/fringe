@@ -20,6 +20,12 @@ class Airplane extends BaseClass {
   }
 
   createFlight (options = {}) {
+    if (this.flight()) {
+      console.error(`
+        Airplane [${this.name}] already in a flight.
+      `.trim())
+      return
+    }
     const {
       departAirport, destAirport
     } = options

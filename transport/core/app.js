@@ -70,6 +70,26 @@ const companies = {
   [xiaoda.name]: xiaoda
 }
 
+/* Communicate */
+const channel =
+window.channel = new BroadcastChannel('transport')
+function postFlightLogs () {
+  channel.postMessage({
+    action: 'flightLogs',
+    data: flightLogs.logs
+  })
+}
+channel.onmessage = e => {
+  const {
+    action, data
+  } = e.data
+  switch (action) {
+    case 'requestFlightLogs':
+      postFlightLogs()
+      break
+  }
+}
+
 /* Page */
 function initData () {
   for (let companyName in companies) {
@@ -80,9 +100,12 @@ function initData () {
       airplane.flight(null)
     }
   }
+  flightLogs.clearLogs()
 }
+const initApp =
 window.initApp = _ => {
   initData()
+  postFlightLogs()
   $clockComponent.setData({
     ...$clockComponent.initialData,
     rate: clock.rate
@@ -98,4 +121,6 @@ window.initApp = _ => {
     airports
   })
 }
-window.initApp()
+
+/* Go! */
+initApp()
