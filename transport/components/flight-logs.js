@@ -12,9 +12,10 @@ const $flightLogsComponent = new Component({
       <table border>
         <thead>
           <tr>
+            <th rowspan="2">Index</th>
             <th rowspan="2">Company</th>
             <th rowspan="2">Airplane</th>
-            <th colspan="2">Location</th>
+            <th colspan="2">Departure</th>
             <th colspan="2">Destination</th>
             <th rowspan="2">Seats</th>
             <th rowspan="2">Passengers</th>
@@ -29,9 +30,10 @@ const $flightLogsComponent = new Component({
           </tr>
         </thead>
         <tbody>
-          ${logs.map(log => {
+          ${logs.map((log, index) => {
             return `
               <tr>
+                <td>${logs.length - index}</td>
                 <td>${log.company}</td>
                 <td>${log.airplane}</td>
                 <td>${log.departCity}</td>
@@ -66,11 +68,11 @@ const $flightLogsComponent = new Component({
       switch (action) {
         case 'flightLogs':
           this.setData({
-            logs: data
+            logs: data.reverse()
           })
           break
         case 'newFlightLog':
-          logs.push(data)
+          logs.unshift(data)
           this.setData({logs})
       }
     }
