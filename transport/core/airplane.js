@@ -12,11 +12,12 @@ class Airplane extends BaseClass {
     this.model = options.model || ''
     const modelData = Airplane.getModelData(this.model)
     this.seats = modelData.seats || 0
-    this.optionFactory('flight', null /* Flight Instance */)
     this.optionFactory(
       'airport',
       options.airport /* Airport Instance */
     )
+    this.optionFactory('flight', null /* Flight Instance */)
+    this.optionFactory('strategy', null /* Strategy Instance */)
   }
 
   createFlight (options = {}) {
@@ -39,6 +40,19 @@ class Airplane extends BaseClass {
     })
     this.flight(flight)
     flight.takeoff()
+  }
+
+  applyStrategy (strategy) {
+    this.suspendStrategy()
+    strategy.linkAirplane(this)
+    this.strategy(strategy)
+  }
+
+  suspendStrategy () {
+    const strategy = this.strategy()
+    if (!strategy) return
+    strategy.unlinkAirplane()
+    this.strategy(null)
   }
 
   static models () {

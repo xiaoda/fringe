@@ -52,6 +52,7 @@ class City extends BaseClass {
     const [passedTime] = window.clock.getPassedTime()
     const travelPopulation = this.getTravelPopulation(city)
     let currentTravelPopulation
+    let needUpdate = true
     if (this._currentTravelPopulation.hasOwnProperty(city.name)) {
       const [
         lastPassedTime, lastTravelPopulation
@@ -63,6 +64,9 @@ class City extends BaseClass {
           (passedTime - lastPassedTime) * this.travelPopulationRiseRate
         )
       )
+      if (Math.abs(currentTravelPopulation - lastTravelPopulation) < 100) {
+        needUpdate = false
+      }
     } else {
       currentTravelPopulation = Math.floor(
         travelPopulation *
@@ -72,9 +76,11 @@ class City extends BaseClass {
     currentTravelPopulation = GeometryUtils.clamp(
       0, travelPopulation, currentTravelPopulation
     )
-    this._currentTravelPopulation[city.name] = [
-      passedTime, currentTravelPopulation
-    ]
+    if (needUpdate) {
+      this._currentTravelPopulation[city.name] = [
+        passedTime, currentTravelPopulation
+      ]
+    }
     return currentTravelPopulation
   }
 

@@ -46,7 +46,7 @@ const $citiesComponent = new Component({
                   const destCity = cities[destName]
                   return (
                     name === destName ?
-                    `<td colspan="2"></td>` :
+                    `<td colspan="2" class="no-data"></td>` :
                     `
                       <td>${city.getCurrentTravelPopulation(destCity)}</td>
                       <td>${city.getTravelPopulation(destCity)}</td>

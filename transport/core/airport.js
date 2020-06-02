@@ -8,9 +8,11 @@ class Airport extends BaseClass {
   }
 
   transportToAirport (airport, passengers) {
-    const actualPassengers = this.city.changeCurrentTravelPopulation(
-      airport.city, passengers * -1
-    ) * -1
+    const actualPassengers = (
+      this.city.changeCurrentTravelPopulation(
+        airport.city, passengers * -1
+      ) * -1
+    )
     return actualPassengers
   }
 }

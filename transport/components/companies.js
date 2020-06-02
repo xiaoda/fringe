@@ -2,7 +2,8 @@ const $companiesComponent = new Component({
   elementId: 'companiesComponent',
   data: {
     companies: {},
-    airports: {}
+    airports: {},
+    strategies: {}
   },
   render () {
     const {companies} = this.data
@@ -10,12 +11,14 @@ const $companiesComponent = new Component({
     return `
       <h3>Companies</h3>
       <div>
+        <!--
         <button
-          onClick="${this.instance}.createFlight()"
+          onClick="${this.instance}.manuallyCreateFlight()"
           ${clockStatus === 'running' ? '' : 'disabled'}
         >
           New Flight
         </button>
+        -->
       </div>
       <table id="companiesTable" border>
         <thead>
@@ -54,41 +57,45 @@ const $companiesComponent = new Component({
                   }</td>
                   <td>${airplane.airport().city.name}</td>
                   <td>${airplane.airport().name}</td>
-                  <td>${
+                  ${
                     airplane.flight() ?
-                    airplane.flight().destAirport.name :
-                    ''
-                  }</td>
-                  <td>${
+                    `<td>${airplane.flight().destAirport.name}</td>` :
+                    '<td class="no-data"></td>'
+                  }
+                  ${
                     airplane.flight() ?
-                    airplane.flight().destCity.name :
-                    ''
-                  }</td>
+                    `<td>${airplane.flight().destCity.name}</td>` :
+                    '<td class="no-data"></td>'
+                  }
                   <td>${airplane.seats}</td>
-                  <td>${
+                  ${
                     airplane.flight() ?
-                    airplane.flight().passengers() :
-                    ''
-                  }</td>
-                  <td>${
+                    `<td>${airplane.flight().passengers()}</td>` :
+                    '<td class="no-data"></td>'
+                  }
+                  ${
                     airplane.flight() ?
-                    $clockComponent.generateDateText(
-                      airplane.flight().getTakeoffTimeText()
-                    ) :
-                    ''
-                  }</td>
-                  <td>${
+                    `<td>${
+                      $clockComponent.generateDateText(
+                        airplane.flight().getTakeoffTimeText()
+                      )
+                    }</td>` :
+                    '<td class="no-data"></td>'
+                  }
+                  ${
                     airplane.flight() ?
-                    $clockComponent.generateDateText(
-                      airplane.flight().getArriveTimeText()
-                    ) :
-                    ''
-                  }</td>
-                  <td>${
+                    `<td>${
+                      $clockComponent.generateDateText(
+                        airplane.flight().getArriveTimeText()
+                      )
+                    }</td>` :
+                    '<td class="no-data"></td>'
+                  }
+                  ${
                     airplane.flight() ?
-                    airplane.flight().getToArriveTimeText() :
-                    ''
-                  }</td>
+                    `<td>${airplane.flight().getToArriveTimeText()}</td>` :
+                    '<td class="no-data"></td>'
+                  }
                 </tr>
               `
             }).join('')
@@ -98,7 +105,21 @@ const $companiesComponent = new Component({
     `
   },
   methods: {
-    createFlight () {
+    init () {
+      const {
+        companies, airports, strategies
+      } = this.data
+      const {RoundTripStrategy} = strategies
+      const airbusNo1 = companies.xiaoda.airplanes.AirbusNo1
+      const strategy = new RoundTripStrategy({
+        airports: [
+          airports.PVG, airports.HKG
+        ],
+        passengers: 0
+      })
+      airbusNo1.applyStrategy(strategy)
+    },
+    manuallyCreateFlight () {
       const {
         companies, airports
       } = this.data

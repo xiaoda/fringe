@@ -4,6 +4,7 @@ import Airport from './airport.js'
 import Airplane from './airplane.js'
 import FlightLogs from './flight-logs.js'
 import Company from './company.js'
+import strategies from './strategies/index.js'
 
 /* Clock */
 const clock = window.clock = new Clock()
@@ -118,8 +119,10 @@ window.initApp = _ => {
   $companiesComponent.setData({
     ...$companiesComponent.initialData,
     companies,
-    airports
+    airports,
+    strategies
   })
+  $companiesComponent.init()
 }
 
 /* Go! */

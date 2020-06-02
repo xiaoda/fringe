@@ -6,5 +6,6 @@ table {
 table th,
 table td {padding: 0 5px;}
 table td {text-align: left;}
+table td.no-data {background-color: #ccc;}
 .yes {color: green;}
 .no {color: red;}

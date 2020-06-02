@@ -27,11 +27,9 @@ class Clock extends BaseClass {
   }
 
   start () {
-    let errorMsg
     if (this.startTimeStamp()) {
-      errorMsg = 'Clock already started.'
+      return console.error('Clock already started.')
     }
-    if (errorMsg) return console.error(errorMsg)
 
     const currentTimeStamp = new Date().getTime()
     this.startTimeStamp(currentTimeStamp)
@@ -39,13 +37,12 @@ class Clock extends BaseClass {
   }
 
   pause () {
-    let errorMsg
     if (!this.startTimeStamp()) {
-      errorMsg = 'Clock not started yet.'
-    } else if (this.pauseTimeStamp()) {
-      errorMsg = 'Clock already paused.'
+      return console.error('Clock not started yet.')
     }
-    if (errorMsg) return console.error(errorMsg)
+    if (this.pauseTimeStamp()) {
+      return console.error('Clock already paused.')
+    }
 
     const currentTimeStamp = new Date().getTime()
     this.pauseTimeStamp(currentTimeStamp)
@@ -53,13 +50,12 @@ class Clock extends BaseClass {
   }
 
   continue () {
-    let errorMsg
     if (!this.startTimeStamp()) {
-      errorMsg = 'Clock not started yet.'
-    } else if (!this.pauseTimeStamp()) {
-      errorMsg = 'Clock not paused yet.'
+      return console.error('Clock not started yet.')
     }
-    if (errorMsg) return console.error(errorMsg)
+    if (!this.pauseTimeStamp()) {
+      return console.error('Clock not paused yet.')
+    }
 
     const currentTimeStamp = new Date().getTime()
     const pauseTimeStamp = this.pauseTimeStamp()
