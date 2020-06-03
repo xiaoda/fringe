@@ -59,12 +59,12 @@ const $companiesComponent = new Component({
                   <td>${airplane.airport().name}</td>
                   ${
                     airplane.flight() ?
-                    `<td>${airplane.flight().destAirport.name}</td>` :
+                    `<td>${airplane.flight().destCity.name}</td>` :
                     '<td class="no-data"></td>'
                   }
                   ${
                     airplane.flight() ?
-                    `<td>${airplane.flight().destCity.name}</td>` :
+                    `<td>${airplane.flight().destAirport.name}</td>` :
                     '<td class="no-data"></td>'
                   }
                   <td>${airplane.seats}</td>

@@ -25,6 +25,8 @@ class RoundTripStrategy extends BaseClass {
   unlinkAirplane () {
     this.stopTimer()
     this.airplane(null)
+    this.departAirport(null)
+    this.destAirport(null)
   }
 
   startTimer () {
