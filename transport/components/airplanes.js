@@ -1,26 +1,13 @@
-const $companiesComponent = new Component({
-  elementId: 'companiesComponent',
+const $airplanesComponent = new Component({
+  elementId: 'airplanesComponent',
   data: {
-    companies: {},
-    airports: {},
-    strategies: {}
+    companies: {}
   },
   render () {
     const {companies} = this.data
-    const {status: clockStatus} = $clockComponent.data
     return `
-      <h3>Companies</h3>
-      <div>
-        <!--
-        <button
-          onClick="${this.instance}.manuallyCreateFlight()"
-          ${clockStatus === 'running' ? '' : 'disabled'}
-        >
-          New Flight
-        </button>
-        -->
-      </div>
-      <table id="companiesTable" border>
+      <h3>Airplanes</h3>
+      <table border>
         <thead>
           <tr>
             <th rowspan="2">Company</th>
@@ -42,13 +29,13 @@ const $companiesComponent = new Component({
           </tr>
         </thead>
         <tbody>
-          ${Object.keys(companies).map(name => {
-            const company = companies[name]
-            return Object.keys(company.airplanes).map((planeName, index) => {
+          ${Object.keys(companies).map(companyName => {
+            const company = companies[companyName]
+            return Object.keys(company.airplanes).map(planeName => {
               const airplane = company.airplanes[planeName]
               return `
                 <tr>
-                  ${index === 0 ? `<td rowspan="2">${name}</td>` : ''}
+                  <td>${companyName}</td>
                   <td>${planeName}</td>
                   <td>${
                     airplane.flight() ?
@@ -103,38 +90,5 @@ const $companiesComponent = new Component({
         </tbody>
       </table>
     `
-  },
-  methods: {
-    init () {
-      const {
-        companies, airports, strategies
-      } = this.data
-      const {RoundTripStrategy} = strategies
-      const airbusNo1 = companies.xiaoda.airplanes.AirbusNo1
-      const strategy = new RoundTripStrategy({
-        airports: [
-          airports.PVG, airports.HKG
-        ],
-        passengers: 0
-      })
-      airbusNo1.applyStrategy(strategy)
-    },
-    manuallyCreateFlight () {
-      const {
-        companies, airports
-      } = this.data
-      const airbusNo1 = companies.xiaoda.airplanes.AirbusNo1
-      if (airbusNo1.flight()) return
-      const departAirport = airbusNo1.airport()
-      const destAirport = (
-        departAirport.name === 'PVG' ?
-        airports.HKG :
-        airports.PVG
-      )
-      airbusNo1.createFlight({
-        departAirport,
-        destAirport
-      })
-    }
   }
 })

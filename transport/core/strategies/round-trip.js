@@ -3,6 +3,7 @@ import BaseClass from '../base.js'
 class RoundTripStrategy extends BaseClass {
   constructor (options = {}) {
     super()
+    this.name = 'Round Trip'
     this.airports = options.airports || [/* Airport Instance */]
     this.passengers = options.passengers || 0
     this.optionFactory('airplane', null /* Airplane Instance */)

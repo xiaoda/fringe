@@ -71,6 +71,15 @@ const companies = {
   [xiaoda.name]: xiaoda
 }
 
+/* Strategies */
+const {RoundTripStrategy} = strategies
+airbusNo1.applyStrategy(
+  new RoundTripStrategy({
+    airports: [PVG, HKG],
+    passengers: 0
+  })
+)
+
 /* Communicate */
 const channel =
 window.channel = new BroadcastChannel('transport')
@@ -116,13 +125,14 @@ window.initApp = _ => {
     ...$citiesComponent.initialData,
     cities
   })
-  $companiesComponent.setData({
-    ...$companiesComponent.initialData,
+  $strategiesComponent.setData({
+    ...$strategiesComponent.initialData,
     companies,
-    airports,
-    strategies
   })
-  $companiesComponent.init()
+  $airplanesComponent.setData({
+    ...$airplanesComponent.initialData,
+    companies
+  })
 }
 
 /* Go! */

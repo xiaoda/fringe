@@ -65,9 +65,7 @@ const $clockComponent = new Component({
             partlyUpdateElementId: 'clockTable'
           })
           $citiesComponent.forceUpdate()
-          $companiesComponent.forceUpdate({
-            partlyUpdateElementId: 'companiesTable'
-          })
+          $airplanesComponent.forceUpdate()
         }
       })
     },
@@ -148,7 +146,6 @@ const $clockComponent = new Component({
         needUpdate: false
       })
       this.changeButtonsState()
-      $companiesComponent.forceUpdate()
     },
     changeButtonsState () {
       const {status, buttons} = this.data
