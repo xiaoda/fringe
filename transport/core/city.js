@@ -25,7 +25,7 @@ class City extends BaseClass {
   getTravelPopulation (city) {
     if (!this._travelPopulation) this._travelPopulation = {}
     if (!this._travelPopulation.hasOwnProperty(city.name)) {
-      this._travelPopulation[city.name] = (
+      this._travelPopulation[city.name] = Math.floor(
         _getOneWayPopulation(this, city) +
         _getOneWayPopulation(city, this)
       )
@@ -37,7 +37,7 @@ class City extends BaseClass {
         0
       )
       const destsProportion = depart.destsSum || 1
-      return Math.floor(
+      return (
         depart.population * depart.travelRatio *
         destProportion / destsProportion
       )
@@ -52,36 +52,26 @@ class City extends BaseClass {
     const [passedTime] = window.clock.getPassedTime()
     const travelPopulation = this.getTravelPopulation(city)
     let currentTravelPopulation
-    let needUpdate = true
     if (this._currentTravelPopulation.hasOwnProperty(city.name)) {
       const [
         lastPassedTime, lastTravelPopulation
       ] = this._currentTravelPopulation[city.name]
-      currentTravelPopulation = (
-        lastTravelPopulation +
-        Math.floor(
-          travelPopulation *
-          (passedTime - lastPassedTime) * this.travelPopulationRiseRate
-        )
-      )
-      if (Math.abs(currentTravelPopulation - lastTravelPopulation) < 100) {
-        needUpdate = false
-      }
-    } else {
-      currentTravelPopulation = Math.floor(
+      currentTravelPopulation = lastTravelPopulation + (
         travelPopulation *
+        (passedTime - lastPassedTime) * this.travelPopulationRiseRate
+      )
+    } else {
+      currentTravelPopulation = travelPopulation * (
         passedTime * this.travelPopulationRiseRate
       )
     }
     currentTravelPopulation = GeometryUtils.clamp(
       0, travelPopulation, currentTravelPopulation
     )
-    if (needUpdate) {
-      this._currentTravelPopulation[city.name] = [
-        passedTime, currentTravelPopulation
-      ]
-    }
-    return currentTravelPopulation
+    this._currentTravelPopulation[city.name] = [
+      passedTime, currentTravelPopulation
+    ]
+    return Math.floor(currentTravelPopulation)
   }
 
   changeCurrentTravelPopulation (city, variation = 0) {
