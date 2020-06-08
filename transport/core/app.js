@@ -76,7 +76,7 @@ const {RoundTripStrategy} = strategies
 airbusNo1.applyStrategy(
   new RoundTripStrategy({
     airports: [PVG, HKG],
-    passengers: 0
+    passengers: airbusNo1.seats / 2
   })
 )
 

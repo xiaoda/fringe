@@ -43,9 +43,9 @@ class RoundTripStrategy extends BaseClass {
           departCity.getCurrentTravelPopulation(destCity)
         )
         const passengers = (
-          this.passengers > 0 ?
-          this.passengers :
-          airplane.seats
+          this.passengers === 'seats' ?
+          airplane.seats :
+          this.passengers
         )
         if (currentTravelPopulation < passengers) return
         airplane.createFlight({
