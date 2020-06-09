@@ -34,7 +34,8 @@ class RoundTripStrategy extends BaseClass {
     const timerCallbackIndex = window.clock.registerCyclicCallback(
       'minute', timeText => {
         const airplane = this.airplane()
-        if (airplane.flight()) return
+        const [canCreateFlight] = airplane.canCreateFlight()
+        if (!canCreateFlight) return
         const departAirport = this.departAirport()
         const departCity = departAirport.city
         const destAirport = this.destAirport()

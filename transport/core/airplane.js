@@ -1,4 +1,5 @@
 import BaseClass from './base.js'
+import Clock from './clock.js'
 import Flight from './flight.js'
 
 /* Constants */
@@ -12,19 +13,34 @@ class Airplane extends BaseClass {
     this.model = options.model || ''
     const modelData = Airplane.getModelData(this.model)
     this.seats = modelData.seats || 0
+    this.prepareNextFligtTime = Clock.generateMilliseconds('3h')
     this.optionFactory(
       'airport',
       options.airport /* Airport Instance */
     )
     this.optionFactory('flight', null /* Flight Instance */)
     this.optionFactory('strategy', null /* Strategy Instance */)
+    this.optionFactory('readyToFlyTimeStamp', 0)
+  }
+
+  canCreateFlight () {
+    if (this.flight()) {
+      return [false, `Airplane [${this.name}] already in a flight.`]
+    }
+    const [currentTimeStamp] = window.clock.getPassedTime()
+    const readyToFlyTimeStamp = this.readyToFlyTimeStamp()
+    if (currentTimeStamp < readyToFlyTimeStamp) {
+      return [false, `Airplane [${this.name}] not ready`]
+    }
+    return [true]
   }
 
   createFlight (options = {}) {
-    if (this.flight()) {
-      return console.error(`
-        Airplane [${this.name}] already in a flight.
-      `.trim())
+    const [
+      canCreateFlight, createFlightErrorMessage
+    ] = this.canCreateFlight()
+    if (!canCreateFlight) {
+      return console.error(createFlightErrorMessage)
     }
     const {
       departAirport, destAirport
@@ -40,6 +56,11 @@ class Airplane extends BaseClass {
     })
     this.flight(flight)
     flight.takeoff()
+    const arriveTimeStamp = flight.arriveTimeStamp()
+    const readyToFlyTimeStamp = (
+      arriveTimeStamp + this.prepareNextFligtTime
+    )
+    this.readyToFlyTimeStamp(readyToFlyTimeStamp)
   }
 
   applyStrategy (strategy) {
