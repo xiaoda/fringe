@@ -133,7 +133,7 @@ class Component {
         .getElementById(partlyUpdateElementId)
       const newHTML = new XMLSerializer()
         .serializeToString(newDOM)
-      partlyUpdateElement.innerHTML = newHTML
+      partlyUpdateElement.outerHTML = newHTML
     } else if (container) {
       container.innerHTML = this.render()
     } else if (this.parent()) {

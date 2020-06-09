@@ -7,5 +7,10 @@ table th,
 table td {padding: 0 5px;}
 table td {text-align: left;}
 table td.no-data {background-color: #ccc;}
+table.night th,
+table.night td {
+  background-color: #333;
+  color: #eee;
+}
 .yes {color: green;}
 .no {color: red;}

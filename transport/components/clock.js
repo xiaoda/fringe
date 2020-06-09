@@ -5,6 +5,7 @@ const $clockComponent = new Component({
       rate: 1,
       status: 'initial',
       initialDateText: '01/01 00:00',
+      isNight: true,
       buttons: {
         start:    {disabled: false},
         pause:    {disabled: true },
@@ -17,7 +18,7 @@ const $clockComponent = new Component({
   },
   render () {
     const {
-      rate, dateText, buttons
+      rate, dateText, isNight, buttons
     } = this.data
     return `
       <h3>Clock</h3>
@@ -34,7 +35,11 @@ const $clockComponent = new Component({
           `
         }).join('')}
       </div>
-      <table id="clockTable" border>
+      <table
+        id="clockTable"
+        class="${isNight ? 'night' : ''}"
+        border
+      >
         <thead>
           <tr>
             <th>Rate</th>
@@ -60,8 +65,14 @@ const $clockComponent = new Component({
         if (isReset) {
           window.initApp()
         } else {
+          const hour = Number(
+            timeText.split(' ').reverse()[0].replace('h', '')
+          )
+          const isNight = hour < 6 || hour >= 18
           const dateText = this.generateDateText(timeText)
-          this.setData({dateText}, {
+          this.setData({
+            dateText, isNight
+          }, {
             partlyUpdateElementId: 'clockTable'
           })
           $citiesComponent.forceUpdate()
