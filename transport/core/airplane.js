@@ -23,7 +23,7 @@ class Airplane extends BaseClass {
     this.optionFactory('readyToFlyTimeStamp', 0)
   }
 
-  canCreateFlight () {
+  canCreateFlight (options = {}) {
     if (this.flight()) {
       return [false, `Airplane [${this.name}] already in a flight.`]
     }
@@ -32,19 +32,32 @@ class Airplane extends BaseClass {
     if (currentTimeStamp < readyToFlyTimeStamp) {
       return [false, `Airplane [${this.name}] not ready`]
     }
+    const {
+      departAirport, destAirport
+    } = options
+    const [
+      canCreateFlight, createFlightErrorMessage
+    ] = Flight.canCreateFlight({
+      departAirport, destAirport
+    })
+    if (!canCreateFlight) {
+      return [false, createFlightErrorMessage]
+    }
     return [true]
   }
 
   createFlight (options = {}) {
-    const [
-      canCreateFlight, createFlightErrorMessage
-    ] = this.canCreateFlight()
-    if (!canCreateFlight) {
-      return console.error(createFlightErrorMessage)
-    }
     const {
       departAirport, destAirport
     } = options
+    const [
+      canCreateFlight, createFlightErrorMessage
+    ] = this.canCreateFlight({
+      departAirport, destAirport
+    })
+    if (!canCreateFlight) {
+      return console.error(createFlightErrorMessage)
+    }
     const flight = new Flight({
       airplane: this,
       departAirport,
@@ -56,9 +69,9 @@ class Airplane extends BaseClass {
     })
     this.flight(flight)
     flight.takeoff()
-    const arriveTimeStamp = flight.arriveTimeStamp()
+    const arrivalTimeStamp = flight.arrivalTimeStamp()
     const readyToFlyTimeStamp = (
-      arriveTimeStamp + this.prepareNextFligtTime
+      arrivalTimeStamp + this.prepareNextFligtTime
     )
     this.readyToFlyTimeStamp(readyToFlyTimeStamp)
   }

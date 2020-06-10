@@ -13,14 +13,14 @@ class Flight extends BaseClass {
     this.onArrive = options.onArrive || (_ => {})
     this.optionFactory('status', 'initial')
     this.optionFactory('takeoffTimeStamp', 0)
-    this.optionFactory('arriveTimeStamp', 0)
+    this.optionFactory('arrivalTimeStamp', 0)
     this.optionFactory('passengers', 0)
   }
 
   takeoff () {
     this.status('flying')
     const [currentTimeStamp] = window.clock.getPassedTime()
-    const arriveTimeStamp = (
+    const arrivalTimeStamp = (
       currentTimeStamp +
       Flight.getFlightDuration(
         this.departCity, this.destCity
@@ -30,11 +30,11 @@ class Flight extends BaseClass {
       this.destAirport, this.airplane.seats
     )
     this.takeoffTimeStamp(currentTimeStamp)
-    this.arriveTimeStamp(arriveTimeStamp)
+    this.arrivalTimeStamp(arrivalTimeStamp)
     this.passengers(passengers)
     this.AddToFlightLogs()
     window.clock.registerSingleCallback(
-      arriveTimeStamp, _ => this.arrive()
+      arrivalTimeStamp, _ => this.arrive()
     )
   }
 
@@ -55,15 +55,15 @@ class Flight extends BaseClass {
   }
 
   getArriveTimeText () {
-    const arriveTimeStamp = this.arriveTimeStamp()
-    const arriveTimeText = Clock.generateTimeText(arriveTimeStamp)
+    const arrivalTimeStamp = this.arrivalTimeStamp()
+    const arriveTimeText = Clock.generateTimeText(arrivalTimeStamp)
     return arriveTimeText
   }
 
   getToArriveTimeText () {
     const [currentTimeStamp] = window.clock.getPassedTime()
-    const arriveTimeStamp = this.arriveTimeStamp()
-    let toArriveMilliseconds = arriveTimeStamp - currentTimeStamp
+    const arrivalTimeStamp = this.arrivalTimeStamp()
+    let toArriveMilliseconds = arrivalTimeStamp - currentTimeStamp
     if (toArriveMilliseconds < 0) {
       toArriveMilliseconds = 0
     }
@@ -72,6 +72,33 @@ class Flight extends BaseClass {
       'minute'
     )
     return toArriveTimeText
+  }
+
+  static canCreateFlight (options = {}) {
+    const {
+      departAirport, destAirport
+    } = options
+    const departCity = departAirport.city
+    const destCity = destAirport.city
+    const flightDuration = Flight.getFlightDuration(
+      departCity, destCity
+    )
+    const [currentTimeStamp] = window.clock.getPassedTime()
+    const arrivalTimeStamp = currentTimeStamp + flightDuration
+    if (!departAirport.isInOperatingHours()) {
+      return [
+        false,
+        `Airport ${departAirport.name} not in operating hours.`
+      ]
+    } else if (
+      !destAirport.isInOperatingHours(arrivalTimeStamp)
+    ) {
+      return [
+        false,
+        `Airport ${destAirport.name} not in operating hours.`
+      ]
+    }
+    return [true]
   }
 
   static getFlightDuration (departCity, destCity) {
