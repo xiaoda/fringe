@@ -11,8 +11,6 @@ const $citiesComponent = new Component({
         <thead>
           <tr>
             <th rowspan="2">City</th>
-            <th rowspan="2">Airports</th>
-            <th rowspan="2">Population</th>
             <th
               colspan="${Object.keys(cities).length}"
             >
@@ -31,8 +29,6 @@ const $citiesComponent = new Component({
             return `
               <tr>
                 <td>${name}</td>
-                <td>${city.airports.join(',')}</td>
-                <td>${city.population}</td>
                 ${Object.keys(cities).map(destName => {
                   const destCity = cities[destName]
                   return (

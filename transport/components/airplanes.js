@@ -12,7 +12,6 @@ const $airplanesComponent = new Component({
           <tr>
             <th rowspan="2">Company</th>
             <th rowspan="2">Airplane</th>
-            <th rowspan="2">in Flight</th>
             <th colspan="2">Departure</th>
             <th colspan="2">Destination</th>
             <th rowspan="2">Seats</th>
@@ -37,11 +36,6 @@ const $airplanesComponent = new Component({
                 <tr>
                   <td>${companyName}</td>
                   <td>${planeName}</td>
-                  <td>${
-                    airplane.flight() ?
-                    '<span class="yes">Y</span>' :
-                    '<span class="no">N</span>'
-                  }</td>
                   <td>${airplane.airport().city.name}</td>
                   <td>${airplane.airport().name}</td>
                   ${
