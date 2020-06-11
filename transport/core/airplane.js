@@ -35,14 +35,6 @@ class Airplane extends BaseClass {
     const {
       departAirport, destAirport
     } = options
-    const [
-      canCreateFlight, createFlightErrorMessage
-    ] = Flight.canCreateFlight({
-      departAirport, destAirport
-    })
-    if (!canCreateFlight) {
-      return [false, createFlightErrorMessage]
-    }
     return [true]
   }
 

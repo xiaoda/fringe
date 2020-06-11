@@ -10,12 +10,23 @@ import strategies from './strategies/index.js'
 const clock = window.clock = new Clock()
 
 /* Cities */
+const Beijing = new City({
+  name: 'Beijing',
+  airports: ['PEK'],
+  population: 21540000, // until 2018
+  travelRatio: .05,
+  dests: {
+    Shanghai: 1,
+    Hongkong: 1
+  }
+})
 const Shanghai = new City({
   name: 'Shanghai',
   airports: ['PVG'],
   population: 24240000, // until 2018
   travelRatio: .05,
   dests: {
+    Beijing: 1,
     Hongkong: 1
   }
 })
@@ -25,15 +36,21 @@ const Hongkong = new City({
   population: 7480000, // until 2018
   travelRatio: .1,
   dests: {
-    Shanghai: 1
+    Beijing: .5,
+    Shanghai: .5
   }
 })
 const cities = {
+  [Beijing.name]: Beijing,
   [Shanghai.name]: Shanghai,
   [Hongkong.name]: Hongkong
 }
 
 /* Airports */
+const PEK = new Airport({
+  name: 'PEK',
+  city: Beijing
+})
 const PVG = new Airport({
   name: 'PVG',
   city: Shanghai
@@ -43,6 +60,7 @@ const HKG = new Airport({
   city: Hongkong
 })
 const airports = {
+  [PEK.name]: PEK,
   [PVG.name]: PVG,
   [HKG.name]: HKG
 }
@@ -55,10 +73,6 @@ const airbusNo1 = new Airplane({
   model: AIRBUS_250,
   airport: PVG
 })
-
-/* Flight Logs */
-const flightLogs =
-window.flightLogs = new FlightLogs()
 
 /* Companies */
 const xiaoda = new Company({
@@ -79,6 +93,10 @@ airbusNo1.applyStrategy(
     passengers: airbusNo1.seats / 2
   })
 )
+
+/* Flight Logs */
+const flightLogs =
+window.flightLogs = new FlightLogs()
 
 /* Communicate */
 const channel =

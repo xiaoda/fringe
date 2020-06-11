@@ -74,10 +74,6 @@ class Flight extends BaseClass {
     return toArriveTimeText
   }
 
-  static canCreateFlight (options = {}) {
-    return [true]
-  }
-
   static getFlightDuration (departCity, destCity) {
     const duration = (
       (
