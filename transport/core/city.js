@@ -7,6 +7,7 @@ class City extends BaseClass {
   constructor (options = {}) {
     super()
     this.name = options.name || ''
+    this.abbr = options.abbr || options.name
     this.airports = options.airports || [/* Airport Name */]
     this.population = options.population || 0
     this.travelRatio = options.travelRatio || 0

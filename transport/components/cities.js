@@ -18,9 +18,12 @@ const $citiesComponent = new Component({
             </th>
           </tr>
           <tr>
-            ${Object.keys(cities).map(name => `
-              <th>${name}</th>
-            `).join('')}
+            ${Object.keys(cities).map(name => {
+              const city = cities[name]
+              return `
+                <th>${city.abbr}</th>
+              `
+            }).join('')}
           </tr>
         </thead>
         <tbody>

@@ -12,6 +12,7 @@ const clock = window.clock = new Clock()
 /* Cities */
 const Beijing = new City({
   name: 'Beijing',
+  abbr: 'BJ',
   airports: ['PEK'],
   population: 21540000, // until 2018
   travelRatio: .05,
@@ -22,6 +23,7 @@ const Beijing = new City({
 })
 const Shanghai = new City({
   name: 'Shanghai',
+  abbr: 'SH',
   airports: ['PVG'],
   population: 24240000, // until 2018
   travelRatio: .05,
@@ -32,6 +34,7 @@ const Shanghai = new City({
 })
 const Hongkong = new City({
   name: 'Hongkong',
+  abbr: 'HK',
   airports: ['HKG'],
   population: 7480000, // until 2018
   travelRatio: .1,
