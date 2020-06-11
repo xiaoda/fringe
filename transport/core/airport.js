@@ -6,7 +6,6 @@ class Airport extends BaseClass {
     super()
     this.name = options.name || ''
     this.city = options.city /* City Instance */
-    this.operatingHours = [6, 24]
   }
 
   transportToAirport (airport, passengers) {
@@ -16,22 +15,6 @@ class Airport extends BaseClass {
       ) * -1
     )
     return actualPassengers
-  }
-
-  isInOperatingHours (timeStamp) {
-    if (!timeStamp) {
-      timeStamp = window.clock.getPassedTime()[0]
-    }
-    const timeText = Clock.generateTimeText(timeStamp)
-    const matchHour = timeText.match(/\d+h/)
-    const hour = (
-      matchHour ?
-      Number(matchHour[0].replace('h', '')) :
-      0
-    )
-    const [openHour, closeHour] = this.operatingHours
-    const result = hour >= openHour && hour < closeHour
-    return result
   }
 }
 

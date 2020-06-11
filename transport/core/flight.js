@@ -75,29 +75,6 @@ class Flight extends BaseClass {
   }
 
   static canCreateFlight (options = {}) {
-    const {
-      departAirport, destAirport
-    } = options
-    const departCity = departAirport.city
-    const destCity = destAirport.city
-    const flightDuration = Flight.getFlightDuration(
-      departCity, destCity
-    )
-    const [currentTimeStamp] = window.clock.getPassedTime()
-    const arrivalTimeStamp = currentTimeStamp + flightDuration
-    if (!departAirport.isInOperatingHours()) {
-      return [
-        false,
-        `Airport ${departAirport.name} not in operating hours.`
-      ]
-    } else if (
-      !destAirport.isInOperatingHours(arrivalTimeStamp)
-    ) {
-      return [
-        false,
-        `Airport ${destAirport.name} not in operating hours.`
-      ]
-    }
     return [true]
   }
 
