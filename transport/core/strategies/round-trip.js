@@ -1,69 +1,44 @@
-import BaseClass from '../base.js'
+import StrategyBaseClass from './base.js'
 
-class RoundTripStrategy extends BaseClass {
+class RoundTripStrategy extends StrategyBaseClass {
   constructor (options = {}) {
-    super()
-    this.name = 'Round Trip'
-    this.airports = options.airports || [/* Airport Instance */]
-    this.passengers = options.passengers || 0
-    this.optionFactory('airplane', null /* Airplane Instance */)
-    this.optionFactory('departAirport', null /* Airport Instance */)
-    this.optionFactory('destAirport', null /* Airport Instance */)
-    this.optionFactory('timerCallbackIndex', null)
+    super({
+      ...options,
+      name: 'Round Trip'
+    })
   }
 
-  linkAirplane (airplane) {
+  afterLinkAirplane () {
+    const airplane = this.airplane()
     const departAirport = airplane.airport()
     const [destAirport] = this.airports.filter(airport => {
       return airport.name !== departAirport.name
     })
-    this.airplane(airplane)
-    this.departAirport(departAirport)
     this.destAirport(destAirport)
-    this.startTimer()
   }
 
-  unlinkAirplane () {
-    this.stopTimer()
-    this.airplane(null)
-    this.departAirport(null)
-    this.destAirport(null)
-  }
-
-  startTimer () {
-    const timerCallbackIndex = window.clock.registerCyclicCallback(
-      'minute', timeText => {
-        const airplane = this.airplane()
-        const departAirport = this.departAirport()
-        const destAirport = this.destAirport()
-        const [canCreateFlight] = airplane.canCreateFlight({
-          departAirport, destAirport
-        })
-        if (!canCreateFlight) return
-        const departCity = departAirport.city
-        const destCity = destAirport.city
-        const currentTravelPopulation = (
-          departCity.getCurrentTravelPopulation(destCity)
-        )
-        const passengers = (
-          this.passengers === 'seats' ?
-          airplane.seats :
-          this.passengers
-        )
-        if (currentTravelPopulation < passengers) return
-        airplane.createFlight({
-          departAirport, destAirport
-        })
-        this.departAirport(destAirport)
-        this.destAirport(departAirport)
-      }
+  loop (timeText) {
+    const airplane = this.airplane()
+    const [readyToCreateFlight] = airplane.readyToCreateFlight()
+    if (!readyToCreateFlight) return
+    const departAirport = this.departAirport()
+    const destAirport = this.destAirport()
+    const departCity = departAirport.city
+    const destCity = destAirport.city
+    const travelPopulation = (
+      departCity.getCurrentTravelPopulation(destCity)
     )
-    this.timerCallbackIndex(timerCallbackIndex)
-  }
-
-  stopTimer () {
-    const timerCallbackIndex = this.timerCallbackIndex()
-    window.clock.unregisterCyclicCallback(timerCallbackIndex)
+    const passengers = (
+      this.passengers === 'seats' ?
+      airplane.seats :
+      this.passengers
+    )
+    if (travelPopulation < passengers) return
+    airplane.createFlight({
+      departAirport, destAirport
+    })
+    this.departAirport(destAirport)
+    this.destAirport(departAirport)
   }
 }
 

@@ -18,8 +18,7 @@ const $citiesComponent = new Component({
             </th>
           </tr>
           <tr>
-            ${Object.keys(cities).map(name => {
-              const city = cities[name]
+            ${Object.values(cities).map(city => {
               return `
                 <th>${city.abbr}</th>
               `
@@ -27,15 +26,13 @@ const $citiesComponent = new Component({
           </tr>
         </thead>
         <tbody>
-          ${Object.keys(cities).map(name => {
-            const city = cities[name]
+          ${Object.values(cities).map(city => {
             return `
               <tr>
-                <td>${name}</td>
-                ${Object.keys(cities).map(destName => {
-                  const destCity = cities[destName]
+                <td>${city.name}</td>
+                ${Object.values(cities).map(destCity => {
                   return (
-                    name === destName ?
+                    city.name === destCity.name ?
                     `<td class="no-data"></td>` :
                     `
                       <td>${city.getCurrentTravelPopulation(destCity)}</td>

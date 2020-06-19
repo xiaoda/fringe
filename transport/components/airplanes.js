@@ -28,14 +28,12 @@ const $airplanesComponent = new Component({
           </tr>
         </thead>
         <tbody>
-          ${Object.keys(companies).map(companyName => {
-            const company = companies[companyName]
-            return Object.keys(company.airplanes).map(planeName => {
-              const airplane = company.airplanes[planeName]
+          ${Object.values(companies).map(company => {
+            return Object.values(company.airplanes).map(airplane => {
               return `
                 <tr>
-                  <td>${companyName}</td>
-                  <td>${planeName}</td>
+                  <td>${company.name}</td>
+                  <td>${airplane.name}</td>
                   <td>${airplane.airport().city.name}</td>
                   <td>${airplane.airport().name}</td>
                   ${

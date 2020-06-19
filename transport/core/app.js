@@ -89,13 +89,24 @@ const companies = {
 }
 
 /* Strategies */
-const {RoundTripStrategy} = strategies
+const {
+  RoundTripStrategy,
+  MorePassengersStrategy
+} = strategies
+airbusNo1.applyStrategy(
+  new MorePassengersStrategy({
+    airports: Object.values(airports),
+    passengers: airbusNo1.seats / 2
+  })
+)
+/*
 airbusNo1.applyStrategy(
   new RoundTripStrategy({
     airports: [PVG, HKG],
     passengers: airbusNo1.seats / 2
   })
 )
+*/
 
 /* Flight Logs */
 const flightLogs =
