@@ -62,7 +62,7 @@ const HKG = new Airport({
   name: 'HKG',
   city: Hongkong
 })
-const airports = {
+const airports = window.airports = {
   [PEK.name]: PEK,
   [PVG.name]: PVG,
   [HKG.name]: HKG
@@ -95,14 +95,16 @@ const {
 } = strategies
 airbusNo1.applyStrategy(
   new MorePassengersStrategy({
-    airports: Object.values(airports),
+    cities: Object.values(cities),
     passengers: airbusNo1.seats / 2
   })
 )
 /*
 airbusNo1.applyStrategy(
   new RoundTripStrategy({
-    airports: [PVG, HKG],
+    cities: [
+      Shanghai, Hongkong
+    ],
     passengers: airbusNo1.seats / 2
   })
 )

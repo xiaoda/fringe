@@ -13,7 +13,7 @@ const $strategiesComponent = new Component({
             <th>Company</th>
             <th>Airplane</th>
             <th>Strategy</th>
-            <th>Airports</th>
+            <th>Cities</th>
             <th>Passengers</th>
           </tr>
         </thead>
@@ -32,8 +32,8 @@ const $strategiesComponent = new Component({
                   ${
                     airplane.strategy() ?
                     `<td>${
-                      airplane.strategy().airports.map(airport => {
-                        return airport.name
+                      airplane.strategy().cities.map(city => {
+                        return city.abbr
                       }).join(',')
                     }</td>` :
                     '<td class="no-data"></td>'

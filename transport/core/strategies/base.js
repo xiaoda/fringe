@@ -4,7 +4,11 @@ class StrategyBaseClass extends BaseClass {
   constructor (options = {}) {
     super()
     this.name = options.name || ''
-    this.airports = options.airports || [/* Airport Instance */]
+    this.cities = options.cities || [/* Cities Instance */]
+    this.airports = this.cities.map(city => {
+      const [airportName] = city.airports
+      return window.airports[airportName]
+    })
     this.passengers = options.passengers || 0
     this.optionFactory('airplane', null /* Airplane Instance */)
     this.optionFactory('departAirport', null /* Airport Instance */)
