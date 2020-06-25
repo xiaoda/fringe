@@ -1,6 +1,6 @@
 import BaseClass from './base.js'
 import Clock from './clock.js'
-import flightDuration from '../data/flight-duration.js'
+import flightsDuration from '../data/flights-duration.js'
 
 class Flight extends BaseClass {
   constructor (options = {}) {
@@ -12,23 +12,27 @@ class Flight extends BaseClass {
     this.destCity = this.destAirport.city /* City Instance */
     this.onArrive = options.onArrive || (_ => {})
     this.optionFactory('status', 'initial')
+    this.optionFactory('durationTimeText', 0)
     this.optionFactory('takeoffTimeStamp', 0)
     this.optionFactory('arrivalTimeStamp', 0)
     this.optionFactory('passengers', 0)
   }
 
   takeoff () {
-    this.status('flying')
     const [currentTimeStamp] = window.clock.getPassedTime()
-    const arrivalTimeStamp = (
-      currentTimeStamp +
+    const [durationMilliseconds, durationTimeText] = (
       Flight.getFlightDuration(
         this.departCity, this.destCity
       )
     )
+    const arrivalTimeStamp = (
+      currentTimeStamp + durationMilliseconds
+    )
     const passengers = this.departAirport.transportToAirport(
       this.destAirport, this.airplane.seats
     )
+    this.status('flying')
+    this.durationTimeText(durationTimeText)
     this.takeoffTimeStamp(currentTimeStamp)
     this.arrivalTimeStamp(arrivalTimeStamp)
     this.passengers(passengers)
@@ -75,19 +79,19 @@ class Flight extends BaseClass {
   }
 
   static getFlightDuration (departCity, destCity) {
-    const duration = (
+    const timeText = (
       (
-        flightDuration[departCity.name] &&
-        flightDuration[departCity.name][destCity.name]
+        flightsDuration[departCity.name] &&
+        flightsDuration[departCity.name][destCity.name]
       ) ||
       (
-        flightDuration[destCity.name] &&
-        flightDuration[destCity.name][departCity.name]
+        flightsDuration[destCity.name] &&
+        flightsDuration[destCity.name][departCity.name]
       )
     )
-    if (!duration) return null
-    const milliseconds = Clock.generateMilliseconds(duration)
-    return milliseconds
+    if (!timeText) return null
+    const milliseconds = Clock.generateMilliseconds(timeText)
+    return [milliseconds, timeText]
   }
 }
 

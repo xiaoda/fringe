@@ -5,6 +5,7 @@ const $airplanesComponent = new Component({
   },
   render () {
     const {companies} = this.data
+    const tdWithNoData = '<td class="no-data"></td>'
     return `
       <h3>Airplanes</h3>
       <table border>
@@ -18,7 +19,7 @@ const $airplanesComponent = new Component({
             <th rowspan="2">Passengers</th>
             <th rowspan="2">Takeoff</th>
             <th rowspan="2">Arrival</th>
-            <th rowspan="2">to Arrive</th>
+            <th rowspan="2">Duration</th>
           </tr>
           <tr>
             <th>City</th>
@@ -34,23 +35,23 @@ const $airplanesComponent = new Component({
                 <tr>
                   <td>${company.name}</td>
                   <td>${airplane.name}</td>
-                  <td>${airplane.airport().city.name}</td>
+                  <td>${airplane.airport().city.abbr}</td>
                   <td>${airplane.airport().name}</td>
                   ${
                     airplane.flight() ?
-                    `<td>${airplane.flight().destCity.name}</td>` :
-                    '<td class="no-data"></td>'
+                    `<td>${airplane.flight().destCity.abbr}</td>` :
+                    tdWithNoData
                   }
                   ${
                     airplane.flight() ?
                     `<td>${airplane.flight().destAirport.name}</td>` :
-                    '<td class="no-data"></td>'
+                    tdWithNoData
                   }
                   <td>${airplane.seats}</td>
                   ${
                     airplane.flight() ?
                     `<td>${airplane.flight().passengers()}</td>` :
-                    '<td class="no-data"></td>'
+                    tdWithNoData
                   }
                   ${
                     airplane.flight() ?
@@ -59,7 +60,7 @@ const $airplanesComponent = new Component({
                         airplane.flight().getTakeoffTimeText()
                       )
                     }</td>` :
-                    '<td class="no-data"></td>'
+                    tdWithNoData
                   }
                   ${
                     airplane.flight() ?
@@ -68,12 +69,14 @@ const $airplanesComponent = new Component({
                         airplane.flight().getArriveTimeText()
                       )
                     }</td>` :
-                    '<td class="no-data"></td>'
+                    tdWithNoData
                   }
                   ${
                     airplane.flight() ?
-                    `<td>${airplane.flight().getToArriveTimeText()}</td>` :
-                    '<td class="no-data"></td>'
+                    `<td>${
+                      airplane.flight().durationTimeText()
+                    }</td>` :
+                    tdWithNoData
                   }
                 </tr>
               `

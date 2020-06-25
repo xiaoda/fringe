@@ -8,16 +8,19 @@ class FlightLogs extends BaseClass {
 
   addLog (flight) {
     const log = {
-      company:         flight.airplane.company,
-      airplane:        flight.airplane.name,
-      departAirport:   flight.departAirport.name,
-      departCity:      flight.departCity.name,
-      destAirport:     flight.destAirport.name,
-      destCity:        flight.destCity.name,
-      seats:           flight.airplane.seats,
-      passengers:      flight.passengers(),
-      takeoffTimeText: flight.getTakeoffTimeText(),
-      arriveTimeText:  flight.getArriveTimeText()
+      company:          flight.airplane.company,
+      airplane:         flight.airplane.name,
+      departAirport:    flight.departAirport.name,
+      departCity:       flight.departCity.name,
+      departCityAbbr:   flight.departCity.abbr,
+      destAirport:      flight.destAirport.name,
+      destCity:         flight.destCity.name,
+      destCityAbbr:     flight.destCity.abbr,
+      seats:            flight.airplane.seats,
+      passengers:       flight.passengers(),
+      takeoffTimeText:  flight.getTakeoffTimeText(),
+      arriveTimeText:   flight.getArriveTimeText(),
+      durationTimeText: flight.durationTimeText()
     }
     this.logs.push(log)
     this.broadcastNewLog(log)
