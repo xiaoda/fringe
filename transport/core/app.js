@@ -18,7 +18,7 @@ const Beijing = new City({
   travelRatio: .05,
   dests: {
     Shanghai: 1,
-    Hongkong: 1
+    HongKong: 1
   }
 })
 const Shanghai = new City({
@@ -29,11 +29,11 @@ const Shanghai = new City({
   travelRatio: .05,
   dests: {
     Beijing: 1,
-    Hongkong: 1
+    HongKong: 1
   }
 })
-const Hongkong = new City({
-  name: 'Hongkong',
+const HongKong = new City({
+  name: 'Hong Kong',
   abbr: 'HK',
   airports: ['HKG'],
   population: 7480000, // until 2018
@@ -46,7 +46,7 @@ const Hongkong = new City({
 const cities = {
   [Beijing.name]: Beijing,
   [Shanghai.name]: Shanghai,
-  [Hongkong.name]: Hongkong
+  [HongKong.name]: HongKong
 }
 
 /* Airports */
@@ -60,7 +60,7 @@ const PVG = new Airport({
 })
 const HKG = new Airport({
   name: 'HKG',
-  city: Hongkong
+  city: HongKong
 })
 const airports = window.airports = {
   [PEK.name]: PEK,
@@ -103,7 +103,7 @@ airbusNo1.applyStrategy(
 airbusNo1.applyStrategy(
   new RoundTripStrategy({
     cities: [
-      Shanghai, Hongkong
+      Shanghai, HongKong
     ],
     passengers: airbusNo1.seats / 2
   })
