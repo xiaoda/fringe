@@ -12,7 +12,7 @@ class Flight extends BaseClass {
     this.destCity = this.destAirport.city /* City Instance */
     this.onArrive = options.onArrive || (_ => {})
     this.optionFactory('status', 'initial')
-    this.optionFactory('durationTimeText', 0)
+    this.optionFactory('durationMilliseconds', 0)
     this.optionFactory('takeoffTimeStamp', 0)
     this.optionFactory('arrivalTimeStamp', 0)
     this.optionFactory('passengers', 0)
@@ -20,10 +20,8 @@ class Flight extends BaseClass {
 
   takeoff () {
     const [currentTimeStamp] = window.clock.getPassedTime()
-    const [durationMilliseconds, durationTimeText] = (
-      Flight.getFlightDuration(
-        this.departCity, this.destCity
-      )
+    const durationMilliseconds = Flight.getFlightDuration(
+      this.departCity, this.destCity
     )
     const arrivalTimeStamp = (
       currentTimeStamp + durationMilliseconds
@@ -32,17 +30,17 @@ class Flight extends BaseClass {
       this.destAirport, this.airplane.seats
     )
     this.status('flying')
-    this.durationTimeText(durationTimeText)
+    this.durationMilliseconds(durationMilliseconds)
     this.takeoffTimeStamp(currentTimeStamp)
     this.arrivalTimeStamp(arrivalTimeStamp)
     this.passengers(passengers)
-    this.AddToFlightLogs()
+    this.addToFlightLogs()
     window.clock.registerSingleCallback(
       arrivalTimeStamp, _ => this.arrive()
     )
   }
 
-  AddToFlightLogs () {
+  addToFlightLogs () {
     if (!window.flightLogs) return
     window.flightLogs.addLog(this)
   }
@@ -78,20 +76,43 @@ class Flight extends BaseClass {
     return toArriveTimeText
   }
 
+  getDurationTimeText () {
+    const durationMilliseconds = this.durationMilliseconds()
+    const durationTimeText = Clock.shortenTimeText(
+      Clock.generateTimeText(durationMilliseconds),
+      'minute'
+    )
+    return durationTimeText
+  }
+
+  getDurationPerSeat () {
+    const durationMilliseconds = this.durationMilliseconds()
+    const seats = this.airplane.seats
+    const passengers = this.passengers()
+    const millsecondsPerSeat = (
+      durationMilliseconds * (passengers / seats)
+    )
+    const timeTextPerSeat = Clock.shortenTimeText(
+      Clock.generateTimeText(millsecondsPerSeat),
+      'minute'
+    )
+    return timeTextPerSeat
+  }
+
   static getFlightDuration (departCity, destCity) {
     const timeText = (
       (
-        flightsDuration[departCity.name] &&
-        flightsDuration[departCity.name][destCity.name]
+        flightsDuration[departCity.abbr] &&
+        flightsDuration[departCity.abbr][destCity.abbr]
       ) ||
       (
-        flightsDuration[destCity.name] &&
-        flightsDuration[destCity.name][departCity.name]
+        flightsDuration[destCity.abbr] &&
+        flightsDuration[destCity.abbr][departCity.abbr]
       )
     )
     if (!timeText) return null
     const milliseconds = Clock.generateMilliseconds(timeText)
-    return [milliseconds, timeText]
+    return milliseconds
   }
 }
 

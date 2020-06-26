@@ -22,6 +22,10 @@ const $flightLogsComponent = new Component({
             <th rowspan="2">Takeoff</th>
             <th rowspan="2">Arrival</th>
             <th rowspan="2">Duration</th>
+            <th rowspan="2">
+              Duration<br/>
+              /Seat
+            </th>
           </tr>
           <tr>
             <th>City</th>
@@ -54,6 +58,7 @@ const $flightLogsComponent = new Component({
                   )
                 }</td>
                 <td>${log.durationTimeText}</td>
+                <td>${log.durationPerSeat}</td>
               </tr>
             `
           }).join('')}

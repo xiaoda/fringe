@@ -20,7 +20,8 @@ class FlightLogs extends BaseClass {
       passengers:       flight.passengers(),
       takeoffTimeText:  flight.getTakeoffTimeText(),
       arriveTimeText:   flight.getArriveTimeText(),
-      durationTimeText: flight.durationTimeText()
+      durationTimeText: flight.getDurationTimeText(),
+      durationPerSeat:  flight.getDurationPerSeat()
     }
     this.logs.push(log)
     this.broadcastNewLog(log)

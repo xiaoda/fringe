@@ -20,6 +20,10 @@ const $airplanesComponent = new Component({
             <th rowspan="2">Takeoff</th>
             <th rowspan="2">Arrival</th>
             <th rowspan="2">Duration</th>
+            <th rowspan="2">
+              Duration<br/>
+              /Seat
+            </th>
           </tr>
           <tr>
             <th>City</th>
@@ -74,7 +78,14 @@ const $airplanesComponent = new Component({
                   ${
                     airplane.flight() ?
                     `<td>${
-                      airplane.flight().durationTimeText()
+                      airplane.flight().getDurationTimeText()
+                    }</td>` :
+                    tdWithNoData
+                  }
+                  ${
+                    airplane.flight() ?
+                    `<td>${
+                      airplane.flight().getDurationPerSeat()
                     }</td>` :
                     tdWithNoData
                   }
