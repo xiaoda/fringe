@@ -2,6 +2,7 @@ import Clock from './clock.js'
 import City from './city.js'
 import Airport from './airport.js'
 import Airplane from './airplane.js'
+import AirplaneOverview from './airplane-overview.js'
 import FlightLogs from './flight-logs.js'
 import Company from './company.js'
 import strategies from './strategies/index.js'
@@ -74,7 +75,8 @@ const airbusNo1 = new Airplane({
   name: 'AirbusNo1',
   company: 'xiaoda',
   model: AIRBUS_250,
-  airport: PVG
+  airport: PVG,
+  overview: new AirplaneOverview()
 })
 
 /* Companies */
@@ -165,6 +167,10 @@ window.initApp = _ => {
   })
   $airplanesComponent.setData({
     ...$airplanesComponent.initialData,
+    companies
+  })
+  $overviewComponent.setData({
+    ...$overviewComponent.initialData,
     companies
   })
 }
