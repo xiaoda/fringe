@@ -1,6 +1,7 @@
 import BaseClass from './base.js'
 import Clock from './clock.js'
 import Flight from './flight.js'
+import AirplaneOverview from './airplane-overview.js'
 
 /* Constants */
 const AIRBUS_250 = 'airbus250'
@@ -21,6 +22,10 @@ class Airplane extends BaseClass {
     this.optionFactory('flight', null /* Flight Instance */)
     this.optionFactory('strategy', null /* Strategy Instance */)
     this.optionFactory('readyToFlyTimeStamp', 0)
+    const overview = new AirplaneOverview({
+      airplane: this
+    })
+    this.optionFactory('overview', overview)
   }
 
   readyToCreateFlight () {
@@ -74,6 +79,11 @@ class Airplane extends BaseClass {
     if (!strategy) return
     strategy.unlinkAirplane()
     this.strategy(null)
+  }
+
+  addToOverview (flight) {
+    const overview = this.overview()
+    overview.addFlightData(flight)
   }
 
   static models () {

@@ -35,6 +35,7 @@ class Flight extends BaseClass {
     this.arrivalTimeStamp(arrivalTimeStamp)
     this.passengers(passengers)
     this.addToFlightLogs()
+    this.airplane.addToOverview(this)
     window.clock.registerSingleCallback(
       arrivalTimeStamp, _ => this.arrive()
     )
