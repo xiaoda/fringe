@@ -77,6 +77,7 @@ const $clockComponent = new Component({
           })
           $citiesComponent.forceUpdate()
           $airplanesComponent.forceUpdate()
+          $overviewComponent.forceUpdate()
         }
       })
     },

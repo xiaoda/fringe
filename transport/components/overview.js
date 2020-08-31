@@ -26,16 +26,17 @@ const $overviewComponent = new Component({
         <tbody>
           ${Object.values(companies).map(company => {
             return Object.values(company.airplanes).map(airplane => {
+              const overview = airplane.overview()
               return `
                 <tr>
                   <td>${company.name}</td>
                   <td>${airplane.name}</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
+                  <td>${overview.cities().join(',')}</td>
+                  <td>${overview.flights()}</td>
+                  <td>${overview.passengers()}</td>
+                  <td>${overview.getAttendanceText()}</td>
+                  <td>${overview.getDurationTimeText()}</td>
+                  <td>${overview.getDurationTimeTextPerSeat()}</td>
                 </tr>
               `
             }).join('')
