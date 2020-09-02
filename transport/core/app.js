@@ -142,6 +142,7 @@ function initData () {
     for (let airplaneName in airplanes) {
       const airplane = airplanes[airplaneName]
       airplane.flight(null)
+      airplane.overview().reset()
     }
   }
   flightLogs.clearLogs()

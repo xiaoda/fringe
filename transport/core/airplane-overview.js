@@ -5,12 +5,20 @@ class AirplaneOverview extends BaseClass {
   constructor (options = {}) {
     super()
     this.airplane = options.airplane /* Airplane Instance */
+    this.init()
+  }
+
+  init () {
     this.optionFactory('cities', [/* Cities Abbr */])
     this.optionFactory('flights', 0)
     this.optionFactory('seats', 0)
     this.optionFactory('passengers', 0)
     this.optionFactory('durationMilliseconds', 0)
     this.optionFactory('durationMillisecondsPerSeat', 0)
+  }
+
+  reset () {
+    this.init()
   }
 
   addFlightData (flight) {
@@ -64,11 +72,7 @@ class AirplaneOverview extends BaseClass {
   getAttendanceText () {
     const attendance = this.getAttendance()
     const flights = this.flights()
-    let attendanceText = (
-      flights ?
-      `${Math.round(attendance * 1000) / 10}%` :
-      ''
-    )
+    let attendanceText = `${Math.round(attendance * 1000) / 10}%`
     return attendanceText
   }
 
