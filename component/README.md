@@ -2,10 +2,9 @@
 A simple front end library for demo. [Demo](https://fringe.xiaoda.pro/component/)
 
 ## Install
-Directly include the script & jQuery.
+Directly include the script.
 
 ``` html
-<script src="jquery.js"></script>
 <script src="component.js"></script>
 ```
 
