@@ -8,37 +8,12 @@ class RoundTripStrategy extends StrategyBaseClass {
     })
   }
 
-  afterLinkAirplane () {
-    const airplane = this.airplane()
-    const departAirport = airplane.airport()
+  loop (timeText) {
+    const departAirport = this.departAirport()
     const [destAirport] = this.airports.filter(airport => {
       return airport.name !== departAirport.name
     })
-    this.destAirport(destAirport)
-  }
-
-  loop (timeText) {
-    const airplane = this.airplane()
-    const [readyToCreateFlight] = airplane.readyToCreateFlight()
-    if (!readyToCreateFlight) return
-    const departAirport = this.departAirport()
-    const destAirport = this.destAirport()
-    const departCity = departAirport.city
-    const destCity = destAirport.city
-    const travelPopulation = (
-      departCity.getCurrentTravelPopulation(destCity)
-    )
-    const passengers = (
-      this.passengers === 'seats' ?
-      airplane.seats :
-      this.passengers
-    )
-    if (travelPopulation < passengers) return
-    airplane.createFlight({
-      departAirport, destAirport
-    })
-    this.departAirport(destAirport)
-    this.destAirport(departAirport)
+    this.createFlight({destAirport})
   }
 }
 

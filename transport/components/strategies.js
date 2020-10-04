@@ -5,6 +5,7 @@ const $strategiesComponent = new Component({
   },
   render () {
     const {companies} = this.data
+    const $tdWithNoData = '<td class="no-data"></td>'
     return `
       <h3>Strategies</h3>
       <table border>
@@ -14,7 +15,7 @@ const $strategiesComponent = new Component({
             <th>Airplane</th>
             <th>Cities</th>
             <th>Strategy</th>
-            <th>Passengers</th>
+            <th>Min<br/>Passengers</th>
           </tr>
         </thead>
         <tbody>
@@ -26,22 +27,20 @@ const $strategiesComponent = new Component({
                   <td>${airplane.name}</td>
                   ${
                     airplane.strategy() ?
-                    `<td>${
-                      airplane.strategy().cities.map(city => {
-                        return city.abbr
-                      }).join(',')
-                    }</td>` :
-                    '<td class="no-data"></td>'
-                  }
-                  ${
-                    airplane.strategy() ?
-                    `<td>${airplane.strategy().name}</td>` :
-                    '<td class="no-data"></td>'
-                  }
-                  ${
-                    airplane.strategy() ?
-                    `<td>${airplane.strategy().passengers}</td>` :
-                    '<td class="no-data"></td>'
+                    `
+                      <td>${
+                        airplane.strategy().cities.map(city => {
+                          return city.abbr
+                        }).join(',')
+                      }</td>
+                      <td>${airplane.strategy().name}</td>
+                      ${
+                        airplane.strategy().minPassengers > 0 ?
+                        `<td>${airplane.strategy().minPassengers}</td>` :
+                        $tdWithNoData
+                      }
+                    ` :
+                    $tdWithNoData.repeat(3)
                   }
                 </tr>
               `

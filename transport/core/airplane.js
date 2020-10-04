@@ -47,9 +47,8 @@ class Airplane extends BaseClass {
     if (!readyToCreateFlight) {
       return console.error(createFlightErrorMessage)
     }
-    const {
-      departAirport, destAirport
-    } = options
+    const departAirport = this.airport()
+    const {destAirport} = options
     const flight = new Flight({
       airplane: this,
       departAirport,

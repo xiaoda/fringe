@@ -5,7 +5,7 @@ const $airplanesComponent = new Component({
   },
   render () {
     const {companies} = this.data
-    const tdWithNoData = '<td class="no-data"></td>'
+    const $tdWithNoData = '<td class="no-data"></td>'
     return `
       <h3>Airplanes</h3>
       <table border>
@@ -20,10 +20,7 @@ const $airplanesComponent = new Component({
             <th rowspan="2">Takeoff</th>
             <th rowspan="2">Arrival</th>
             <th rowspan="2">Duration</th>
-            <th rowspan="2">
-              Duration<br/>
-              /Seat
-            </th>
+            <th rowspan="2">Duration<br/>/Seat</th>
           </tr>
           <tr>
             <th>City</th>
@@ -43,51 +40,29 @@ const $airplanesComponent = new Component({
                   <td>${airplane.airport().name}</td>
                   ${
                     airplane.flight() ?
-                    `<td>${airplane.flight().destCity.abbr}</td>` :
-                    tdWithNoData
-                  }
-                  ${
-                    airplane.flight() ?
-                    `<td>${airplane.flight().destAirport.name}</td>` :
-                    tdWithNoData
-                  }
-                  <td>${airplane.seats}</td>
-                  ${
-                    airplane.flight() ?
-                    `<td>${airplane.flight().passengers()}</td>` :
-                    tdWithNoData
-                  }
-                  ${
-                    airplane.flight() ?
-                    `<td>${
-                      $clockComponent.generateDateText(
-                        airplane.flight().getTakeoffTimeText()
-                      )
-                    }</td>` :
-                    tdWithNoData
-                  }
-                  ${
-                    airplane.flight() ?
-                    `<td>${
-                      $clockComponent.generateDateText(
-                        airplane.flight().getArriveTimeText()
-                      )
-                    }</td>` :
-                    tdWithNoData
-                  }
-                  ${
-                    airplane.flight() ?
-                    `<td>${
-                      airplane.flight().getDurationTimeText()
-                    }</td>` :
-                    tdWithNoData
-                  }
-                  ${
-                    airplane.flight() ?
-                    `<td>${
-                      airplane.flight().getDurationPerSeat()
-                    }</td>` :
-                    tdWithNoData
+                    `
+                      <td>${airplane.flight().destCity.abbr}</td>
+                      <td>${airplane.flight().destAirport.name}</td>
+                      <td>${airplane.seats}</td>
+                      <td>${airplane.flight().passengers()}</td>
+                      <td>${
+                        $clockComponent.generateDateText(
+                          airplane.flight().getTakeoffTimeText()
+                        )
+                      }</td>
+                      <td>${
+                        $clockComponent.generateDateText(
+                          airplane.flight().getArriveTimeText()
+                        )
+                      }</td>
+                      <td>${airplane.flight().getDurationTimeText()}</td>
+                      <td>${airplane.flight().getDurationPerSeat()}</td>
+                    ` :
+                    `
+                      ${$tdWithNoData.repeat(2)}
+                      <td>${airplane.seats}</td>
+                      ${$tdWithNoData.repeat(5)}
+                    `
                   }
                 </tr>
               `

@@ -9,7 +9,7 @@ class StrategyBaseClass extends BaseClass {
       const [airportName] = city.airports
       return window.airports[airportName]
     })
-    this.passengers = options.passengers || 0
+    this.minPassengers = options.minPassengers || 0
     this.optionFactory('airplane', null /* Airplane Instance */)
     this.optionFactory('departAirport', null /* Airport Instance */)
     this.optionFactory('destAirport', null /* Airport Instance */)
@@ -39,6 +39,9 @@ class StrategyBaseClass extends BaseClass {
   startTimer () {
     const timerCallbackIndex = window.clock.registerCyclicCallback(
       'minute', timeText => {
+        const airplane = this.airplane()
+        const [readyToCreateFlight] = airplane.readyToCreateFlight()
+        if (!readyToCreateFlight) return
         if (typeof this.loop === 'function') {
           this.loop(timeText)
         }
@@ -50,6 +53,20 @@ class StrategyBaseClass extends BaseClass {
   stopTimer () {
     const timerCallbackIndex = this.timerCallbackIndex()
     window.clock.unregisterCyclicCallback(timerCallbackIndex)
+  }
+
+  createFlight (options = {}) {
+    const airplane = this.airplane()
+    const departAirport = this.departAirport()
+    const departCity = departAirport.city
+    const {destAirport} = options
+    const destCity = destAirport.city
+    const travelPopulation = (
+      departCity.getCurrentTravelPopulation(destCity)
+    )
+    if (travelPopulation < this.minPassengers) return
+    airplane.createFlight({destAirport})
+    this.departAirport(destAirport)
   }
 }
 

@@ -91,24 +91,15 @@ const companies = {
 /* Strategies */
 const {
   RoundTripStrategy,
-  MorePassengersStrategy
+  MorePassengersStrategy,
+  MoreDurationStrategy
 } = strategies
 airbusNo1.applyStrategy(
-  new MorePassengersStrategy({
+  new MoreDurationStrategy({
     cities: Object.values(cities),
-    passengers: airbusNo1.seats / 2
+    minPassengers: Math.ceil(airbusNo1.seats / 5)
   })
 )
-/*
-airbusNo1.applyStrategy(
-  new RoundTripStrategy({
-    cities: [
-      Shanghai, HongKong
-    ],
-    passengers: airbusNo1.seats / 2
-  })
-)
-*/
 
 /* Flight Logs */
 const flightLogs =

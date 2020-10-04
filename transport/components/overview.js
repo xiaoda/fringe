@@ -17,10 +17,7 @@ const $overviewComponent = new Component({
             <th>Passengers</th>
             <th>Attendance</th>
             <th>Duration</th>
-            <th>
-              Duration<br/>
-              /Seat
-            </th>
+            <th>Duration<br/>/Seat</th>
           </tr>
         </thead>
         <tbody>

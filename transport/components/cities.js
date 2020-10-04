@@ -5,6 +5,7 @@ const $citiesComponent = new Component({
   },
   render () {
     const {cities} = this.data
+    const $tdWithNoData = '<td class="no-data"></td>'
     return `
       <h3>Cities</h3>
       <table border>
@@ -33,7 +34,7 @@ const $citiesComponent = new Component({
                 ${Object.values(cities).map(destCity => {
                   return (
                     city.name === destCity.name ?
-                    `<td class="no-data"></td>` :
+                    $tdWithNoData :
                     `
                       <td>${city.getCurrentTravelPopulation(destCity)}</td>
                     `
