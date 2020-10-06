@@ -14,7 +14,7 @@ class Airplane extends BaseClass {
     this.model = options.model || ''
     const modelData = Airplane.getModelData(this.model)
     this.seats = modelData.seats || 0
-    this.prepareNextFligtTime = Clock.generateMilliseconds('3h')
+    this.prepareNextFligtTime = Clock.generateMilliseconds('6h')
     this.optionFactory(
       'airport',
       options.airport /* Airport Instance */

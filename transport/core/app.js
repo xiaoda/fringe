@@ -76,12 +76,19 @@ const airbusNo1 = new Airplane({
   model: AIRBUS_250,
   airport: PVG
 })
+const airbusNo2 = new Airplane({
+  name: 'AirbusNo2',
+  company: 'xiaoda',
+  model: AIRBUS_250,
+  airport: PVG
+})
 
 /* Companies */
 const xiaoda = new Company({
   name: 'xiaoda',
   airplanes: {
-    [airbusNo1.name]: airbusNo1
+    [airbusNo1.name]: airbusNo1,
+    [airbusNo2.name]: airbusNo2
   }
 })
 const companies = {
@@ -92,12 +99,18 @@ const companies = {
 const {
   RoundTripStrategy,
   MorePassengersStrategy,
-  MoreDurationStrategy
+  MoreDurationPerSeatStrategy
 } = strategies
 airbusNo1.applyStrategy(
-  new MoreDurationStrategy({
+  new MorePassengersStrategy({
     cities: Object.values(cities),
-    minPassengers: Math.ceil(airbusNo1.seats / 5)
+    minPassengers: Math.floor(airbusNo1.seats * .2)
+  })
+)
+airbusNo2.applyStrategy(
+  new MoreDurationPerSeatStrategy({
+    cities: Object.values(cities),
+    minPassengers: Math.floor(airbusNo1.seats * .2)
   })
 )
 

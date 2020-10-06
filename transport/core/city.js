@@ -1,7 +1,7 @@
 import BaseClass from './base.js'
 
 /* Constants */
-const TRAVEL_POPULATION_RIZE_RATE = .000000000005
+const TRAVEL_POPULATION_RIZE_RATE = .000000000003
 
 class City extends BaseClass {
   constructor (options = {}) {

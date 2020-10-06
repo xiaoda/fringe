@@ -1,11 +1,11 @@
 import StrategyBaseClass from './base.js'
 import Flight from '../flight.js'
 
-class MoreDurationStrategy extends StrategyBaseClass {
+class MoreDurationPerSeatStrategy extends StrategyBaseClass {
   constructor (options = {}) {
     super({
       ...options,
-      name: 'More Duration'
+      name: 'More Duration / Seat'
     })
   }
 
@@ -14,15 +14,20 @@ class MoreDurationStrategy extends StrategyBaseClass {
     const departCity = departAirport.city
     const airports = this.airports
       .filter(airport => airport.name !== departAirport.name)
-    let tempDuration = 0
+    let tempDurationAboutSeat = 0
     let tempDestAirport
     airports.forEach(destAirport => {
       const destCity = destAirport.city
+      const travelPopulation = (
+        departCity.getCurrentTravelPopulation(destCity)
+      )
+      if (travelPopulation < this.minPassengers) return
       const duration = Flight.getFlightDuration(
         departCity, destCity
       )
-      if (duration > tempDuration) {
-        tempDuration = duration
+      const durationAboutSeat = duration * travelPopulation
+      if (durationAboutSeat > tempDurationAboutSeat) {
+        tempDurationAboutSeat = durationAboutSeat
         tempDestAirport = destAirport
       }
     })
@@ -32,4 +37,4 @@ class MoreDurationStrategy extends StrategyBaseClass {
   }
 }
 
-export default MoreDurationStrategy
+export default MoreDurationPerSeatStrategy
