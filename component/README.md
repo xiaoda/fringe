@@ -45,5 +45,5 @@ Directly include the script.
 ### updated()
 实例后续执行 render 方法
 
-### beforeDetroy()
+### beforeDestroy()
 实例销毁
