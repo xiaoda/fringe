@@ -9,14 +9,14 @@ const $individuals = new Component({
     const hawkData = {type: 'hawk'}
     const totalData = {type: 'total'}
     if (scene) {
-      const {individuals} = scene
-      totalData.number = individuals.length
-      doveData.number = individuals
+      totalData.number = scene.individuals.length
+      doveData.number = scene.individuals
         .filter(individual => individual.type === 'dove').length
-      hawkData.number = individuals
+      hawkData.number = scene.individuals
         .filter(individual => individual.type === 'hawk').length
       doveData.percent = doveData.number / totalData.number
       hawkData.percent = hawkData.number / totalData.number
+      totalData.percent = 1
     }
     const data = [doveData, hawkData, totalData]
     return `
@@ -37,10 +37,7 @@ const $individuals = new Component({
                   ${utils.capitalize(individualData.type)}
                 </td>
                 <td>${individualData.number}</td>
-                <td>${
-                  individualData.type === 'total' ? '' :
-                  utils.percentize(individualData.percent)
-                }</td>
+                <td>${utils.percentize(individualData.percent)}</td>
               </tr>
             `
           }).join('')}

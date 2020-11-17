@@ -3,8 +3,8 @@ class Scene {
     this.individuals = []
     this.foodPairCount = options.foodPairCount || 50
     this.foodTotalCount = this.foodPairCount * 2
-    this.availableFood = this._initAvailableFood()
-    this.foodIndividualMap = this._initFoodIndividualMap()
+    this._initAvailableFood()
+    this._initFoodIndividualsMap()
   }
 
   addIndividual (individual) {
@@ -18,23 +18,46 @@ class Scene {
   }
 
   allocateFood () {
+    this._initAvailableFood()
+    this._initFoodIndividualsMap()
+    this.individuals.forEach(individual => {
+      if (!this.availableFood.length) {
+        console.error(
+          'Scene allocateFood Error: Not enough food.'
+        )
+        return
+      }
+      const foodIndex = Math.floor(
+        Math.random() * this.availableFood.length
+      )
+      const chosenFood = this.availableFood[foodIndex]
+      this.foodIndividualsMap[chosenFood].push(individual)
+      if (this.foodIndividualsMap[chosenFood].length >= 2) {
+        const removeIndex = this.availableFood
+          .findIndex(food => food === chosenFood)
+        this.availableFood.splice(removeIndex, 1)
+      }
+    })
+  }
 
+  produceResult () {
+    this.foodIndividualsMap.forEach(individuals => {
+      // todo
+    })
   }
 
   _initAvailableFood () {
-    const availableFood = []
+    this.availableFood = []
     for (let i = 0; i < this.foodPairCount; i++) {
-      availableFood.push(i)
+      this.availableFood.push(i)
     }
-    return availableFood
   }
 
-  _initFoodIndividualMap () {
-    const foodIndividualMap = []
+  _initFoodIndividualsMap () {
+    this.foodIndividualsMap = []
     for (let i = 0; i < this.foodPairCount; i++) {
-      foodIndividualMap.push([])
+      this.foodIndividualsMap.push([])
     }
-    return foodIndividualMap
   }
 }
 
