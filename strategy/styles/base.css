@@ -6,21 +6,21 @@ table td {text-align: right;}
 .dove {color: blue;}
 .hawk {color: red;}
 
-.allocation-table th,
-.allocation-table td {
+.selection-table th,
+.selection-table td {
   width: 24px;
   padding: 0;
   text-align: center;
   font-weight: normal;
 }
-.allocation-table i {
+.selection-table i {
   float: left;
   width: 11px;
   height: 22px;
 }
-.allocation-table i.dove {
+.selection-table i.dove {
   background-color: blue;
 }
-.allocation-table i.hawk {
+.selection-table i.hawk {
   background-color: red;
 }

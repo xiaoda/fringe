@@ -1,5 +1,5 @@
-const $allocation = new Component({
-  elementId: 'allocation',
+const $selection = new Component({
+  elementId: 'selection',
   data: {
     scene: null
   },
@@ -12,7 +12,7 @@ const $allocation = new Component({
       const rowLength = Math.ceil(scene.foodPairCount / matrixLength)
       const rowArray = new Array(rowLength).fill()
       $content = `
-        <table class="allocation-table" border>
+        <table class="selection-table" border>
           <thead>
             <tr>
               <th></th>
@@ -34,7 +34,7 @@ const $allocation = new Component({
                         <td>
                           ${scene.foodIndividualsMap[index].map(individual => {
                             return `<i class="${individual.type}"></i>`
-                          })}
+                          }).join('')}
                         </td>
                       `
                     }
@@ -48,7 +48,7 @@ const $allocation = new Component({
       `
     }
     return `
-      <h3>Allocation</h3>
+      <h3>Selection</h3>
       ${$content}
     `
   }
