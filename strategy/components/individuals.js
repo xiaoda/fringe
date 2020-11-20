@@ -16,7 +16,6 @@ const $individuals = new Component({
         .filter(individual => individual.type === 'hawk').length
       doveData.percent = doveData.number / totalData.number
       hawkData.percent = hawkData.number / totalData.number
-      totalData.percent = 1
     }
     const data = [doveData, hawkData, totalData]
     return `
@@ -37,7 +36,10 @@ const $individuals = new Component({
                   ${utils.capitalize(individualData.type)}
                 </td>
                 <td>${individualData.number}</td>
-                <td>${utils.percentize(individualData.percent)}</td>
+                <td>${
+                  individualData.type === 'total' ? '' :
+                  utils.percentize(individualData.percent)
+                }</td>
               </tr>
             `
           }).join('')}

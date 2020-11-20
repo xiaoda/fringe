@@ -1,15 +1,21 @@
 import Days from './days.js'
 import Scene from './scene.js'
+import SceneLogs from './scene-logs.js'
 import individuals from './individuals/index.js'
 
 /* Constants */
 const {Dove, Hawk} = individuals
 const days = new Days()
 const scene = new Scene()
+const sceneLogs = new SceneLogs()
 
 /* Init App */
-scene.addIndividual(new Dove())
-scene.addIndividual(new Hawk())
+scene.addIndividuals([
+  new Dove(), new Dove(),
+  new Hawk(), new Hawk()
+])
+scene.useLogService(sceneLogs)
+scene.saveLog()
 
 /* Init Components */
 $days.setData({days})
@@ -22,8 +28,9 @@ window.toNextDay = _ => {
   scene.resetDailyData()
   scene.selectFood()
   scene.allocateFood()
-  scene.produceResult()
-  // console.log(scene)
+  scene.generateResult()
+  scene.saveLog()
+  console.info('Next Day', scene)
   window.updateComponents()
 }
 

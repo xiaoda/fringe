@@ -5,7 +5,7 @@ class Individual {
   }
 
   clone () {
-    const constructor = this.__proto__.constructor
+    const {constructor} = this.__proto__
     return new constructor()
   }
 }

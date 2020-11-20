@@ -12,6 +12,10 @@ class Scene {
     this._resetFoodIndividualsMap()
   }
 
+  useLogService (logInstance) {
+    this.logService = logInstance
+  }
+
   addIndividual (individual) {
     this.individuals.push(individual)
   }
@@ -85,7 +89,7 @@ class Scene {
     })
   }
 
-  produceResult () {
+  generateResult () {
     const nextDayIndividuals = []
     this.individuals.forEach(individual => {
       let surviveChance = individual.food
@@ -100,6 +104,10 @@ class Scene {
       }
     })
     this.individuals = nextDayIndividuals
+  }
+
+  saveLog () {
+    this.logService.addLog(this)
   }
 
   _resetIndividuals () {
