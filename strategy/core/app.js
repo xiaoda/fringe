@@ -30,7 +30,7 @@ window.toNextDay = _ => {
   scene.allocateFood()
   scene.generateResult()
   scene.saveLog()
-  console.info('Next Day', scene)
+  console.info(scene)
   window.updateComponents()
 }
 
